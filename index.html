@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 備課詠唱台：莫蘭迪奶油版</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            morandi: {
+              cream: '#FDFCF8',
+              stone: '#E8E4DD',
+              mutedTeal: '#768E85',
+              softBlue: '#8FA3AD',
+              warmSand: '#D6CFC7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #FDFCF8; color: #4A4A4A; }
+    .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(8px); border: 1px solid #E8E4DD; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const GRADES = ['國小一年級', '國小二年級', '國小三年級', '國小四年級', '國小五年級', '國小六年級', '國中一年級', '國中二年級', '國中三年級', '其他'];
+    const SUBJECTS = ['國語', '數學', '社會', '自然', '英文', '美術', '生活', '音樂', '資訊', '體育', '健康', '綜合活動', '閱讀', '地理', '歷史', '公民與社會', '物理', '化學', '生物', '地球科學', '輔導諮商', '班級經營', '行政需求', '其他'];
+
+    const STRATEGY_GROUPS = [
+      { label: '教學與思維策略', options: ['MAPS 教學法', 'PBL 專題導向', '四學法', '4C 核心素養', 'SDGs 永續發展', '4F 焦點提問', 'ORID 討論法', '六頂思考帽'] },
+      { label: '視覺筆記策略', options: ['心智圖/概念圖', '曼陀羅九宮格', '魚骨圖分析', 'T圖/維恩圖比較', '時間軸/流程圖', '條列 321 收斂法'] },
+      { label: '互動與協作', options: ['賓果連線/分一得一', '角色扮演', '實體課堂活動'] }
+    ];
+
+    const GAMES = {
+      single: ['無(純教案)', '開花特效光影遊戲', '閃卡', '超級瑪利歐', '賽車', '記憶翻轉', '填字遊戲', '百萬大富翁', '打地鼠', '切西瓜', '拼圖', '其他'],
+      dual: ['拔河', '賽跑', '賽車', '其他']
+    };
+
+    const STYLES = ['多巴胺活力風', '莫蘭迪溫柔風', '童趣插畫風', '簡約專業風'];
+    const FORMATS = ['完整的教案表格', '互動遊戲題庫', '行政處理摘要', '生成互動式網頁 HTML 程式碼'];
+
+    function App() {
+      const [data, setData] = useState({
+        grade: '國小三年級',
+        subject: '班級經營',
+        unitTopic: '',
+        context: '',
+        strategy: 'MAPS 教學法',
+        playerMode: 'single',
+        game: '無(純教案)',
+        style: '莫蘭迪溫柔風',
+        format: '完整的教案表格'
+      });
+      const [copied, setCopied] = useState(false);
+
+      const updatePlayerMode = (playerMode) => {
+        setData({
+          ...data,
+          playerMode,
+          game: GAMES[playerMode][0]
+        });
+      };
+
+      const generatePrompt = () => {
+        const isAdmin = data.subject === '行政需求';
+        const isHTML = data.format === '生成互動式網頁 HTML 程式碼';
+
+        let prompt = `【角色】你是一位專業的「${data.grade} ${data.subject}」老師。你具備豐富教育經驗，語氣溫和、具啟發性。`;
+
+        if (isAdmin) {
+          prompt += `\n【行政協助】我目前有行政資料需要處理：\n資料內容：${data.context}\n請協助我進行整理、摘要或草擬公文/信件。`;
+        } else {
+          prompt += `\n【背景】教學主題：${data.unitTopic}\n學生狀況：${data.context}`;
+        }
+
+        prompt += `\n【任務】請運用「${data.strategy}」策略設計。${data.game !== '無(純教案)' ? `\n請設計結合「${data.game}」遊戲機制的內容，幫助學生精熟題目。` : ''}`;
+        prompt += `\n【格式】請產出「${data.format}」。`;
+
+        if (isHTML) {
+          prompt += `\n\n[強制規範]：請產出單一完整、可直接複製執行的 HTML 檔案程式碼（含 Tailwind CSS CDN 與 React）。確保程式碼具備 RWD 響應式設計，並運用「${data.style}」的美學風格。`;
+        }
+
+        prompt += `\n\n[結語]：最後請提供一段溫暖的教師關懷語錄。`;
+        return prompt;
+      };
+
+      const copyPrompt = () => {
+        navigator.clipboard.writeText(generatePrompt());
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
+
+      return (
+        <div className="max-w-5xl mx-auto p-6 md:p-8">
+          <h1 className="text-3xl font-bold text-morandi-mutedTeal mb-8">🌱 備課詠唱台 (莫蘭迪奶油版)</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <select value={data.grade} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" onChange={e => setData({...data, grade: e.target.value})}>
+                {GRADES.map(g => <option key={g}>{g}</option>)}
+              </select>
+              <select value={data.subject} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" onChange={e => setData({...data, subject: e.target.value})}>
+                {SUBJECTS.map(s => <option key={s}>{s}</option>)}
+              </select>
+              <input value={data.unitTopic} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" placeholder="主題名稱" onChange={e => setData({...data, unitTopic: e.target.value})} />
+              <textarea value={data.context} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream min-h-28" placeholder="情境/資料內容" onChange={e => setData({...data, context: e.target.value})} />
+
+              <div className="bg-morandi-stone p-4 rounded-lg">
+                <label className="text-sm font-bold block mb-2 text-morandi-mutedTeal">選擇策略</label>
+                <select value={data.strategy} className="w-full p-2 mb-2 rounded border border-morandi-warmSand bg-white" onChange={e => setData({...data, strategy: e.target.value})}>
+                  {STRATEGY_GROUPS.map(g => (
+                    <optgroup key={g.label} label={g.label}>
+                      {g.options.map(o => <option key={o}>{o}</option>)}
+                    </optgroup>
+                  ))}
+                </select>
+                <div className="flex gap-2 mb-2">
+                  <button className={`px-3 py-1 rounded ${data.playerMode === 'single' ? 'bg-morandi-mutedTeal text-white' : 'bg-white'}`} onClick={() => updatePlayerMode('single')}>單人</button>
+                  <button className={`px-3 py-1 rounded ${data.playerMode === 'dual' ? 'bg-morandi-mutedTeal text-white' : 'bg-white'}`} onClick={() => updatePlayerMode('dual')}>雙人</button>
+                </div>
+                <select value={data.game} className="w-full p-2 rounded border border-morandi-warmSand bg-white" onChange={e => setData({...data, game: e.target.value})}>
+                  {GAMES[data.playerMode].map(g => <option key={g}>{g}</option>)}
+                </select>
+              </div>
+
+              <select value={data.style} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" onChange={e => setData({...data, style: e.target.value})}>
+                {STYLES.map(s => <option key={s}>{s}</option>)}
+              </select>
+              <select value={data.format} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" onChange={e => setData({...data, format: e.target.value})}>
+                {FORMATS.map(f => <option key={f}>{f}</option>)}
+              </select>
+            </div>
+
+            <div className="bg-stone-800 p-6 rounded-xl text-white font-mono text-sm overflow-auto h-[500px]">
+              <pre className="whitespace-pre-wrap">{generatePrompt()}</pre>
+              <button
+                className="mt-6 w-full p-4 bg-morandi-mutedTeal text-white rounded-lg font-bold"
+                onClick={copyPrompt}
+              >
+                {copied ? '已複製！' : '複製詠唱詞'}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
