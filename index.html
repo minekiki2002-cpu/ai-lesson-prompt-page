@@ -36,8 +36,31 @@
   <script type="text/babel">
     const { useState } = React;
 
-    const GRADES = ['國小一年級', '國小二年級', '國小三年級', '國小四年級', '國小五年級', '國小六年級', '國中一年級', '國中二年級', '國中三年級', '其他'];
-    const SUBJECTS = ['國語', '數學', '社會', '自然', '英文', '美術', '生活', '音樂', '資訊', '體育', '健康', '綜合活動', '閱讀', '地理', '歷史', '公民與社會', '物理', '化學', '生物', '地球科學', '輔導諮商', '班級經營', '行政需求', '其他'];
+    const PLACEHOLDER = '請選擇';
+    const GRADES = [PLACEHOLDER, '國小一年級', '國小二年級', '國小三年級', '國小四年級', '國小五年級', '國小六年級', '國中一年級', '國中二年級', '國中三年級', '其他'];
+    const SUBJECTS = [PLACEHOLDER, '國語', '數學', '社會', '自然', '英文', '美術', '生活', '音樂', '資訊', '體育', '健康', '綜合活動', '閱讀', '地理', '歷史', '公民與社會', '物理', '化學', '生物', '地球科學', '輔導諮商', '班級經營', '行政需求', '其他'];
+
+    const TASK_TYPES = [
+      PLACEHOLDER,
+      '完整備課教案',
+      '出考題',
+      '設計學習單',
+      '建立互動遊戲',
+      '課堂活動流程',
+      '差異化教學調整',
+      '補救教學設計',
+      '素養導向評量',
+      '評分規準 Rubric',
+      '簡報大綱',
+      '閱讀理解提問',
+      '探究實作任務',
+      '班級經營對話稿',
+      '親師溝通信件',
+      '學生回饋單',
+      '行政文件摘要',
+      '會議紀錄整理',
+      '其他'
+    ];
 
     const STRATEGY_GROUPS = [
       { label: '教學與思維策略', options: ['MAPS 教學法', 'PBL 專題導向', '四學法', '4C 核心素養', 'SDGs 永續發展', '4F 焦點提問', 'ORID 討論法', '六頂思考帽'] },
@@ -46,26 +69,29 @@
     ];
 
     const GAMES = {
-      single: ['無(純教案)', '開花特效光影遊戲', '閃卡', '超級瑪利歐', '賽車', '記憶翻轉', '填字遊戲', '百萬大富翁', '打地鼠', '切西瓜', '拼圖', '其他'],
-      dual: ['拔河', '賽跑', '賽車', '其他']
+      single: [PLACEHOLDER, '無(純教案)', '開花特效光影遊戲', '閃卡', '超級瑪利歐', '賽車', '記憶翻轉', '填字遊戲', '百萬大富翁', '打地鼠', '切西瓜', '拼圖', '其他'],
+      dual: [PLACEHOLDER, '拔河', '賽跑', '賽車', '其他']
     };
 
-    const STYLES = ['多巴胺活力風', '莫蘭迪溫柔風', '童趣插畫風', '簡約專業風'];
-    const FORMATS = ['完整的教案表格', '互動遊戲題庫', '行政處理摘要', '生成互動式網頁 HTML 程式碼'];
+    const STYLES = [PLACEHOLDER, '多巴胺活力風', '莫蘭迪溫柔風', '童趣插畫風', '簡約專業風', '溫暖手作風', '清爽資訊圖表風'];
+    const FORMATS = [PLACEHOLDER, '完整的教案表格', '互動遊戲題庫', '考題卷與答案解析', '學習單版面', '課堂流程表', 'Rubric 評分表', '簡報逐頁大綱', '行政處理摘要', '親師溝通信件', '生成互動式網頁 HTML 程式碼'];
 
     function App() {
       const [data, setData] = useState({
-        grade: '國小三年級',
-        subject: '班級經營',
+        grade: PLACEHOLDER,
+        subject: PLACEHOLDER,
+        taskType: PLACEHOLDER,
         unitTopic: '',
         context: '',
-        strategy: 'MAPS 教學法',
+        strategy: PLACEHOLDER,
         playerMode: 'single',
-        game: '無(純教案)',
-        style: '莫蘭迪溫柔風',
-        format: '完整的教案表格'
+        game: PLACEHOLDER,
+        style: PLACEHOLDER,
+        format: PLACEHOLDER
       });
       const [copied, setCopied] = useState(false);
+
+      const picked = (value, fallback) => value === PLACEHOLDER ? fallback : value;
 
       const updatePlayerMode = (playerMode) => {
         setData({
@@ -76,10 +102,16 @@
       };
 
       const generatePrompt = () => {
-        const isAdmin = data.subject === '行政需求';
+        const isAdmin = data.subject === '行政需求' || data.taskType === '行政文件摘要' || data.taskType === '會議紀錄整理';
         const isHTML = data.format === '生成互動式網頁 HTML 程式碼';
+        const grade = picked(data.grade, '請依需求補齊年級');
+        const subject = picked(data.subject, '請依需求補齊領域/科目');
+        const taskType = picked(data.taskType, '請依需求補齊任務類型');
+        const strategy = picked(data.strategy, '請依教學目標選擇合適策略');
+        const format = picked(data.format, '請依任務選擇最適合的輸出格式');
+        const style = picked(data.style, '請依使用情境設定合適風格');
 
-        let prompt = `【角色】你是一位專業的「${data.grade} ${data.subject}」老師。你具備豐富教育經驗，語氣溫和、具啟發性。`;
+        let prompt = `【角色】你是一位專業的「${grade} ${subject}」老師。你具備豐富教育經驗，語氣溫和、具啟發性。`;
 
         if (isAdmin) {
           prompt += `\n【行政協助】我目前有行政資料需要處理：\n資料內容：${data.context}\n請協助我進行整理、摘要或草擬公文/信件。`;
@@ -87,11 +119,33 @@
           prompt += `\n【背景】教學主題：${data.unitTopic}\n學生狀況：${data.context}`;
         }
 
-        prompt += `\n【任務】請運用「${data.strategy}」策略設計。${data.game !== '無(純教案)' ? `\n請設計結合「${data.game}」遊戲機制的內容，幫助學生精熟題目。` : ''}`;
-        prompt += `\n【格式】請產出「${data.format}」。`;
+        prompt += `\n【任務類型】${taskType}`;
+        prompt += `\n【設計策略】請運用「${strategy}」規劃內容。`;
+
+        if (data.taskType === '出考題') {
+          prompt += `\n【出題要求】請依主題設計題目，包含題型配置、難易度分層、素養情境題、答案與詳解，並標示可評量的學習重點。`;
+        }
+
+        if (data.taskType === '差異化教學調整') {
+          prompt += `\n【差異化要求】請同時提供基礎、進階、需要支持學生的調整版本，並給予教師課中觀察重點。`;
+        }
+
+        if (data.taskType === '親師溝通信件') {
+          prompt += `\n【溝通要求】請使用溫和、清楚、具支持性的語氣，避免責備，並提供家長可在家配合的具體做法。`;
+        }
+
+        if (data.taskType === '評分規準 Rubric' || data.format === 'Rubric 評分表') {
+          prompt += `\n【評量要求】請列出評量面向、表現等級、具體描述、給分建議與教師回饋語。`;
+        }
+
+        if (data.game !== PLACEHOLDER && data.game !== '無(純教案)') {
+          prompt += `\n【遊戲化】請設計結合「${data.game}」遊戲機制的內容，幫助學生精熟題目。`;
+        }
+
+        prompt += `\n【格式】請產出「${format}」。`;
 
         if (isHTML) {
-          prompt += `\n\n[強制規範]：請產出單一完整、可直接複製執行的 HTML 檔案程式碼（含 Tailwind CSS CDN 與 React）。確保程式碼具備 RWD 響應式設計，並運用「${data.style}」的美學風格。`;
+          prompt += `\n\n[強制規範]：請產出單一完整、可直接複製執行的 HTML 檔案程式碼（含 Tailwind CSS CDN 與 React）。確保程式碼具備 RWD 響應式設計，並運用「${style}」的美學風格。`;
         }
 
         prompt += `\n\n[結語]：最後請提供一段溫暖的教師關懷語錄。`;
@@ -115,12 +169,16 @@
               <select value={data.subject} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" onChange={e => setData({...data, subject: e.target.value})}>
                 {SUBJECTS.map(s => <option key={s}>{s}</option>)}
               </select>
+              <select value={data.taskType} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" onChange={e => setData({...data, taskType: e.target.value})}>
+                {TASK_TYPES.map(t => <option key={t}>{t}</option>)}
+              </select>
               <input value={data.unitTopic} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream" placeholder="主題名稱" onChange={e => setData({...data, unitTopic: e.target.value})} />
               <textarea value={data.context} className="w-full p-3 rounded-lg border-morandi-stone border bg-morandi-cream min-h-28" placeholder="情境/資料內容" onChange={e => setData({...data, context: e.target.value})} />
 
               <div className="bg-morandi-stone p-4 rounded-lg">
                 <label className="text-sm font-bold block mb-2 text-morandi-mutedTeal">選擇策略</label>
                 <select value={data.strategy} className="w-full p-2 mb-2 rounded border border-morandi-warmSand bg-white" onChange={e => setData({...data, strategy: e.target.value})}>
+                  <option>{PLACEHOLDER}</option>
                   {STRATEGY_GROUPS.map(g => (
                     <optgroup key={g.label} label={g.label}>
                       {g.options.map(o => <option key={o}>{o}</option>)}
