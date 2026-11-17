@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>家鄉文化市集：我的跨國料理開賣啦！</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFF7E8; --paper2:#FFEFD2; --ink:#4A3426; --ink2:#7A5B45;
+  --red:#E85D4A; --red2:#F7A08F; --mustard:#F2B33D; --teal:#2BA59B; --teal2:#BDE8E1;
+  --blue:#3D6FB6; --blue2:#CFE0F7; --green:#6BAF4F; --green2:#DDF0CF; --pink:#F48FB1; --purple:#9C7BD1;
+  --shadow: 0 4px 0 rgba(74,52,38,.18);
+  --r:22px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-weight:500}
+body{min-height:100vh;background-image:radial-gradient(rgba(242,179,61,.18) 2px,transparent 2px);background-size:26px 26px}
+button{font-family:inherit;color:inherit;cursor:pointer}
+input,textarea,select{font-family:inherit;color:var(--ink);font-size:20px}
+.num{font-family:Fredoka,sans-serif}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--paper);border-bottom:3px dashed rgba(74,52,38,.2)}
+.awning{height:22px;background:repeating-linear-gradient(90deg,var(--red) 0 40px,#fff 40px 80px);border-bottom:3px solid var(--ink);position:relative}
+.awning:after{content:"";position:absolute;left:0;right:0;bottom:-14px;height:14px;background:radial-gradient(circle at 20px 0,var(--red) 18px,transparent 19px) 0 0/80px 14px repeat-x,radial-gradient(circle at 60px 0,#fff 18px,transparent 19px) 0 0/80px 14px repeat-x}
+.topbar h1{font-size:clamp(18px,2.6vw,26px);margin:0;font-weight:900;flex:1}
+.pill{border:3px solid var(--ink);background:#fff;border-radius:999px;padding:8px 16px;font-size:18px;font-weight:700;box-shadow:var(--shadow)}
+.pill:active{transform:translateY(3px);box-shadow:none}
+.pill.hot{background:var(--mustard)}
+.pill.teal{background:var(--teal);color:#fff}
+.pill.red{background:var(--red);color:#fff}
+.pill.blue{background:var(--blue);color:#fff}
+.pill.ghost{background:transparent;box-shadow:none}
+.pill:disabled{opacity:.45;cursor:not-allowed}
+
+main{max-width:1180px;margin:0 auto;padding:18px 18px 80px}
+.view{display:none;animation:pop .35s ease}
+.view.on{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.card{background:#fff;border:3px solid var(--ink);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
+.stationHead{display:flex;align-items:center;gap:14px;margin:6px 0 14px}
+.badge{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;font-size:30px;background:var(--mustard);box-shadow:var(--shadow)}
+.stationHead h2{margin:0;font-size:clamp(22px,3vw,32px);font-weight:900;line-height:1.25}
+.stationHead p{margin:2px 0 0;color:var(--ink2);font-size:18px}
+.question{background:var(--teal2);border:3px solid var(--teal);border-radius:18px;padding:12px 16px;font-size:21px;font-weight:700;margin:16px 0;display:flex;gap:10px;align-items:flex-start}
+.question:before{content:"🤔";font-size:26px}
+.hint{color:var(--ink2);font-size:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+
+/* speak box */
+.speak{margin-top:18px;background:var(--paper2);border:3px dashed var(--mustard);border-radius:18px;padding:12px 14px}
+.speak label{display:flex;align-items:center;gap:8px;font-weight:900;font-size:19px;margin-bottom:6px}
+.speak label .mic{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-size:18px}
+.speak textarea,.field{width:100%;border:3px solid var(--ink);border-radius:14px;padding:10px 12px;background:#fff;min-height:64px;resize:vertical;line-height:1.5}
+.field{min-height:auto}
+.speak small{display:block;color:var(--ink2);margin-top:4px;font-size:14px}
+.saved{color:var(--teal);font-weight:700;font-size:14px;opacity:0;transition:.3s}
+.saved.on{opacity:1}
+
+.nav{display:flex;justify-content:space-between;margin-top:22px;gap:10px;flex-wrap:wrap}
+
+/* ---------- home market ---------- */
+.hero{text-align:center;margin:8px 0 6px}
+.hero h2{font-size:clamp(26px,4.4vw,46px);margin:6px 0;font-weight:900;letter-spacing:1px}
+.hero h2 span{background:linear-gradient(transparent 60%,var(--mustard) 60%);padding:0 6px}
+.hero p{font-size:19px;color:var(--ink2);margin:4px 0}
+.stalls{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;margin-top:22px}
+.stall{position:relative;border:3px solid var(--ink);border-radius:20px;background:#fff;box-shadow:var(--shadow);padding:0 0 14px;text-align:left;overflow:hidden;transition:transform .15s}
+.stall:hover{transform:translateY(-4px) rotate(-.6deg)}
+.stall:active{transform:translateY(2px)}
+.stall .roof{height:30px;border-bottom:3px solid var(--ink)}
+.stall .ico{font-size:58px;text-align:center;margin:10px 0 0}
+.stall .no{position:absolute;top:38px;left:12px;background:var(--ink);color:#fff;border-radius:999px;padding:2px 10px;font-size:15px;font-family:Fredoka}
+.stall h3{margin:6px 16px 2px;font-size:22px;font-weight:900}
+.stall p{margin:0 16px;font-size:16px;color:var(--ink2);line-height:1.45}
+.stall.star{outline:4px dashed var(--red);outline-offset:4px}
+.teacher{margin-top:26px}
+.teacher summary{font-weight:900;font-size:19px;cursor:pointer}
+.teacher li{margin:6px 0;line-height:1.6}
+.switch{display:inline-flex;align-items:center;gap:10px;font-weight:700}
+.switch input{width:26px;height:26px}
+
+/* ---------- station 1 rice ---------- */
+.riceStage{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center}
+@media (max-width:820px){.riceStage{grid-template-columns:1fr}}
+.riceBowl{text-align:center}
+.riceBowl .tag{display:inline-block;background:var(--ink);color:#fff;border-radius:999px;padding:4px 14px;font-weight:700}
+.riceCards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:820px){.riceCards{grid-template-columns:repeat(2,1fr)}}
+.rcard{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:10px;min-height:250px;box-shadow:var(--shadow);text-align:center;position:relative}
+.rcard.closed{background:repeating-linear-gradient(45deg,var(--paper2) 0 14px,#fff 14px 28px)}
+.rcard.closed .inner{display:none}
+.rcard .cover{font-size:20px;font-weight:900;margin-top:70px}
+.rcard:not(.closed) .cover{display:none}
+.rcard h4{margin:4px 0;font-size:20px}
+.rcard .grp{display:inline-block;font-size:14px;border-radius:999px;padding:2px 10px;background:var(--teal2);font-weight:700}
+.rcard p{font-size:15.5px;margin:6px 0 0;line-height:1.45}
+.rcard.pick{outline:5px solid var(--red);outline-offset:3px}
+.rcard .pickmark{position:absolute;top:-12px;right:-10px;background:var(--red);color:#fff;border-radius:50%;width:34px;height:34px;display:none;place-items:center;font-weight:900;border:3px solid var(--ink)}
+.rcard.pick .pickmark{display:grid}
+.compare{display:none;margin-top:18px}
+.compare.on{display:block}
+.cmpGrid{display:grid;grid-template-columns:150px 1fr 1fr;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:#fff}
+.cmpGrid>div{padding:10px 12px;border-bottom:2px dashed rgba(74,52,38,.25);font-size:17px;line-height:1.45}
+.cmpGrid .h{background:var(--paper2);font-weight:900}
+.cmpGrid .same{grid-column:2/4;background:var(--green2);font-weight:900;text-align:center}
+.cmpGrid .clickme{cursor:pointer}
+.cmpGrid .clickme.hide{color:transparent;background:repeating-linear-gradient(45deg,#f5ede0 0 10px,#fff 10px 20px);position:relative}
+.cmpGrid .clickme.hide:after{content:"點我看";color:var(--ink2);position:absolute;inset:0;display:grid;place-items:center;font-weight:700}
+
+/* ---------- station 2 kitchen ---------- */
+.caseBox{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:stretch}
+@media (max-width:820px){.caseBox{grid-template-columns:1fr}}
+.casePart{border:3px solid var(--ink);border-radius:18px;padding:10px;background:#fff;text-align:center;cursor:pointer;box-shadow:var(--shadow)}
+.casePart .why{display:none;margin-top:8px;background:var(--paper2);border-radius:12px;padding:8px;font-size:16px;line-height:1.45;text-align:left}
+.casePart.open .why{display:block}
+.casePart h4{margin:6px 0 0;font-size:19px}
+.plus{font-size:44px;font-weight:900;display:grid;place-items:center}
+.caseTabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.caseTabs button.on{background:var(--mustard)}
+.steps{display:flex;gap:8px;margin:18px 0 12px;flex-wrap:wrap}
+.steps button{flex:1;min-width:150px;border:3px solid var(--ink);border-radius:999px;background:#fff;padding:10px;font-size:17px;font-weight:900}
+.steps button.on{background:var(--red);color:#fff}
+.steps button.done:not(.on){background:var(--green2)}
+.kstep{display:none}
+.kstep.on{display:block;animation:pop .3s}
+.abBox{border:3px solid var(--ink);border-radius:20px;padding:14px;background:#fff}
+.abBox.a{background:#FFF3F0}
+.abBox.b{background:#EFF8F6}
+.abBox h3{margin:0 0 8px;display:flex;align-items:center;gap:8px;font-size:22px}
+.abtag{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;color:#fff;font-family:Fredoka;font-weight:700;font-size:22px;border:3px solid var(--ink)}
+.abtag.a{background:var(--red)} .abtag.b{background:var(--teal)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{border:2.5px solid var(--ink);border-radius:999px;background:#fff;padding:6px 12px;font-size:16.5px;font-weight:700}
+.chip.on{background:var(--mustard)}
+.chip.a.on{background:var(--red);color:#fff}
+.chip.b.on{background:var(--teal);color:#fff}
+.lbl{font-weight:900;margin:10px 0 4px;display:block;font-size:17px}
+.sketch{margin-top:16px;border:3px dashed var(--ink);border-radius:20px;padding:16px;background:#FFFDF6;text-align:center;font-size:21px;line-height:1.8;position:relative}
+.sketch:before{content:"✏️ 我的設計草圖卡";position:absolute;top:-16px;left:18px;background:var(--paper);padding:0 8px;font-size:16px;font-weight:900}
+.sketch b.a{color:var(--red)} .sketch b.b{color:var(--teal)}
+.sketch .q{display:inline-block;background:var(--mustard);border-radius:12px;padding:0 10px;font-weight:900}
+.viewTabs{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.viewTabs button.on{background:var(--mustard)}
+.dishStage{display:grid;grid-template-columns:minmax(280px,440px) 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.dishStage{grid-template-columns:1fr}}
+.dishFrame{position:relative;border:3px solid var(--ink);border-radius:24px;background:#fff;aspect-ratio:1/1;overflow:hidden;box-shadow:var(--shadow)}
+.dishFrame img,.dishFrame svg{width:100%;height:100%;display:block;object-fit:cover}
+.stamp{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700;z-index:3}
+.loading{position:absolute;inset:0;display:none;place-items:center;background:rgba(255,247,232,.92);z-index:4;text-align:center;font-weight:900;font-size:20px}
+.loading.on{display:grid}
+.pot{font-size:64px;animation:wob 1s infinite ease-in-out}
+@keyframes wob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg) translateY(-6px)}}
+.layerRow{border:2.5px solid var(--ink);border-radius:16px;padding:8px 10px;margin-bottom:10px;background:#fff}
+.layerRow .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.layerRow .top b{font-size:18px;min-width:70px}
+.owner{display:inline-flex;border:2.5px solid var(--ink);border-radius:999px;overflow:hidden;margin-left:auto}
+.owner button{border:0;background:#fff;padding:4px 10px;font-weight:900;font-size:15px}
+.owner button.on.a{background:var(--red);color:#fff}
+.owner button.on.b{background:var(--teal);color:#fff}
+.owner button.on.n{background:#ddd}
+.layerRow .chips{margin:6px 0 2px}
+.layerRow .chip{font-size:15px;padding:4px 10px}
+.layerRow input{width:100%;border:2px solid rgba(74,52,38,.4);border-radius:10px;padding:6px 10px;font-size:16px;margin-top:4px}
+.compareNote{background:var(--blue2);border:3px solid var(--blue);border-radius:16px;padding:10px 14px;margin-top:12px;font-size:17px;line-height:1.5}
+.warn{background:#FFE3DD;border:3px solid var(--red);border-radius:16px;padding:10px 14px;margin-top:10px;font-size:16px;display:none}
+.warn.on{display:block}
+
+/* ---------- station 3 menu ---------- */
+.menuBoard{border:3px solid var(--ink);border-radius:22px;background:#2F4A3A;color:#fff;padding:18px;box-shadow:var(--shadow);position:relative}
+.menuBoard:before{content:"MENU";position:absolute;top:-16px;right:20px;background:var(--mustard);color:var(--ink);border:3px solid var(--ink);border-radius:10px;padding:0 10px;font-family:Fredoka;font-weight:700}
+.menuBoard label{font-weight:900;font-size:19px;display:block;margin:6px 0}
+.menuBoard input,.menuBoard textarea{width:100%;border-radius:14px;border:3px solid #fff;padding:10px 12px;background:#FFFDF6}
+.menuBoard textarea{min-height:150px;line-height:1.6;resize:vertical}
+.menuBoard .chip{background:#FFFDF6}
+.menuBoard small{color:#d9f0e3}
+.demo{display:none;background:#FFFDF6;color:var(--ink);border-radius:14px;padding:12px;margin-top:8px;line-height:1.6;font-size:17px}
+.demo.on{display:block}
+
+/* overlay */
+.overlay{position:fixed;inset:0;background:rgba(40,28,20,.6);z-index:100;display:none;place-items:center;padding:16px}
+.overlay.on{display:grid}
+.sheet{background:var(--paper);border:4px solid var(--ink);border-radius:26px;max-width:1000px;width:100%;max-height:94vh;overflow:auto;padding:18px;position:relative}
+.sheet .close{position:absolute;top:10px;right:10px}
+.custGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+@media (max-width:820px){.custGrid{grid-template-columns:1fr}}
+.custImg{position:relative;border:3px solid var(--ink);border-radius:22px;overflow:hidden;aspect-ratio:1/1;background:#fff;touch-action:manipulation}
+.custImg img,.custImg svg{width:100%;height:100%;object-fit:cover;display:block}
+.sticker{position:absolute;transform:translate(-50%,-50%);font-weight:900;border:3px solid var(--ink);border-radius:999px;padding:4px 10px;color:#fff;font-size:16px;pointer-events:none;animation:pop .25s}
+.sticker.a{background:var(--red)} .sticker.b{background:var(--teal)}
+.custMenu{background:#2F4A3A;color:#fff;border-radius:20px;padding:16px;border:3px solid var(--ink)}
+.custMenu h3{font-size:30px;margin:0 0 8px}
+.custMenu p{font-size:20px;line-height:1.7;margin:0}
+.ourTag{display:inline-block;background:var(--mustard);color:var(--ink);border-radius:999px;padding:2px 12px;font-weight:900;margin-bottom:8px;border:2px solid var(--ink)}
+
+/* poster */
+#posterCanvas{width:100%;max-width:440px;border:3px solid var(--ink);border-radius:14px;display:block;margin:0 auto;background:#fff}
+.posterImg{width:100%;max-width:440px;display:block;margin:0 auto;border:3px solid var(--ink);border-radius:14px}
+.styleDots{display:flex;gap:10px}
+.styleDots button{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink)}
+.styleDots button.on{outline:4px solid var(--ink);outline-offset:3px}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.wall figure{margin:0;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:8px;box-shadow:var(--shadow);transform:rotate(var(--rot,0deg));position:relative}
+.wall figure:before{content:"";position:absolute;top:-12px;left:50%;width:70px;height:22px;margin-left:-35px;background:rgba(242,179,61,.75);transform:rotate(-3deg)}
+.wall img{width:100%;border-radius:10px;display:block}
+.wall figcaption{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-weight:700}
+
+/* ---------- station 4 clothing ---------- */
+.window{border:6px solid #8B5E3C;border-radius:24px;background:linear-gradient(#FDF8EC,#F3E6CC);padding:14px;position:relative;box-shadow:inset 0 0 0 4px #fff,var(--shadow)}
+.mannequins{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.manq{position:relative;text-align:center}
+.manq h4{margin:0 0 4px;font-size:19px}
+.manq svg{width:100%;max-height:440px}
+.hs circle{animation:pulse2 1.6s infinite}@keyframes pulse2{50%{stroke-width:7}}
+.hsOld{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:3px solid var(--ink);background:var(--mustard);font-weight:900;font-family:Fredoka;display:grid;place-items:center;animation:pulse 1.6s infinite;font-size:18px;padding:0}
+.hs.on{background:var(--red);color:#fff;animation:none}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(242,179,61,.8)}50%{box-shadow:0 0 0 12px rgba(242,179,61,0)}}
+.hotInfo{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hotInfo>div{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:10px 12px;font-size:17px;line-height:1.5;min-height:90px}
+.verdict{text-align:center;margin-top:10px;font-size:20px;font-weight:900}
+.keep{background:var(--green2);border:2px solid var(--green);border-radius:999px;padding:2px 12px}
+.change{background:#FFE3DD;border:2px solid var(--red);border-radius:999px;padding:2px 12px}
+.ccards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.ccards{grid-template-columns:repeat(2,1fr)}}
+.ccard{perspective:900px;height:300px;cursor:pointer}
+.ccard .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.ccard.flip .in{transform:rotateY(180deg)}
+.ccard .f,.ccard .bk{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:3px solid var(--ink);border-radius:18px;background:#fff;padding:10px;box-shadow:var(--shadow);overflow:auto}
+.ccard .f{text-align:center}
+.ccard .f svg{height:190px;width:100%}
+.ccard .bk{transform:rotateY(180deg);background:var(--paper2);font-size:15.5px;line-height:1.5}
+.ccard h4{margin:4px 0;font-size:19px}
+.ccard .bk b{display:block;margin-top:6px;color:var(--blue)}
+
+/* ---------- station 5 ---------- */
+.station{border:3px solid var(--ink);border-radius:22px;overflow:hidden;background:#fff}
+.signBoard{background:#1F5FA8;color:#fff;padding:18px;text-align:center;position:relative}
+.signBoard .big{font-size:52px;font-weight:900;letter-spacing:6px}
+.signBoard .en{font-family:Fredoka;font-size:26px}
+.signBoard .old{display:inline-block;margin-top:6px;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:16px}
+.langBtns{display:flex;flex-wrap:wrap;gap:10px;padding:14px;justify-content:center;background:#EAF2FB}
+.bubble{margin:0 14px 14px;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:12px 16px;font-size:20px;min-height:76px;line-height:1.5;position:relative}
+.bubble:before{content:"📢";margin-right:6px}
+.people{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.people{grid-template-columns:1fr}}
+.pcard{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:12px;text-align:center;box-shadow:var(--shadow);cursor:pointer}
+.pcard .face{width:110px;height:110px;margin:0 auto}
+.pcard .nm{font-size:23px;font-weight:900;margin:4px 0}
+.pcard .story{display:none;text-align:left;background:var(--paper2);border-radius:12px;padding:8px 10px;font-size:16px;line-height:1.5;margin-top:6px}
+.pcard.open .story{display:block}
+.pcard .fic{font-size:13px;color:var(--ink2)}
+.opts{display:grid;gap:10px;margin-top:10px}
+.opt{border:3px solid var(--ink);border-radius:16px;background:#fff;padding:12px 14px;text-align:left;font-size:19px;font-weight:700}
+.opt.good{background:var(--green2);border-color:var(--green)}
+.opt.meh{background:#FFE9E4;border-color:var(--red)}
+.fb{margin-top:10px;font-size:18px;line-height:1.6;display:none;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:12px}
+.fb.on{display:block}
+.chat{display:flex;flex-direction:column;gap:8px}
+.chat div{max-width:80%;padding:8px 12px;border-radius:16px;border:2.5px solid var(--ink);font-size:17px}
+.chat .me{align-self:flex-end;background:var(--mustard)}
+.chat .you{align-self:flex-start;background:var(--teal2)}
+
+/* ---------- quiz ---------- */
+.qtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.qtabs button.on{background:var(--mustard)}
+.qpane{display:none}
+.qpane.on{display:block}
+.match{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px 120px}
+@media (max-width:700px){.match{gap:14px 50px}}
+.match svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.mi{border:3px solid var(--ink);border-radius:16px;background:#fff;padding:12px;font-size:19px;font-weight:900;text-align:center;box-shadow:var(--shadow);position:relative;z-index:1}
+.mi.sel{background:var(--mustard)}
+.mi.ok{background:var(--green2)}
+.mi.bad{background:#FFE3DD}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:700px){.mem{grid-template-columns:repeat(2,1fr)}}
+.mc{height:120px;border:3px solid var(--ink);border-radius:16px;font-size:19px;font-weight:900;background:repeating-linear-gradient(45deg,var(--teal) 0 12px,#5cc0b6 12px 24px);color:transparent;box-shadow:var(--shadow);padding:6px;line-height:1.35}
+.mc.up{background:#fff;color:var(--ink)}
+.mc.done{background:var(--green2);color:var(--ink)}
+.sortPool{display:flex;flex-wrap:wrap;gap:10px;min-height:60px;padding:10px;border:3px dashed rgba(74,52,38,.3);border-radius:18px}
+.sortItem{border:3px solid var(--ink);border-radius:999px;background:#fff;padding:8px 14px;font-size:18px;font-weight:700}
+.sortItem.sel{background:var(--mustard)}
+.sortItem.ok{background:var(--green2)} .sortItem.bad{background:#FFE3DD}
+.baskets{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.basket{border:3px solid var(--ink);border-radius:22px;min-height:190px;padding:12px;background:#fff}
+.basket h4{margin:0 0 8px;font-size:20px;text-align:center}
+.basket .items{display:flex;flex-wrap:wrap;gap:8px}
+.scoreBar{margin-top:14px;font-size:19px;font-weight:900;text-align:center;min-height:28px}
+.done-stamp{display:inline-block;transform:rotate(-8deg);border:4px solid var(--red);color:var(--red);border-radius:14px;padding:2px 12px;font-weight:900}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:700;z-index:200;opacity:0;transition:.3s;pointer-events:none}
+.toast.on{opacity:1}
+
+/* ---- v2 additions ---- */
+.heroImg{width:100%;max-width:900px;display:block;margin:0 auto;border-radius:26px;border:3px solid var(--ink);box-shadow:var(--shadow)}
+.pic{width:100%;display:block;border-radius:14px;aspect-ratio:1/1;object-fit:cover;background:#FFF9EE}
+.riceBowl img{width:180px;border-radius:50%;border:3px solid var(--ink)}
+.rcard .inner img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
+.rcard{min-height:300px}
+.rcard .cover{margin-top:110px}
+.cmpImgs{display:grid;grid-template-columns:150px 1fr 1fr;gap:0;margin-bottom:8px}
+.cmpImgs img{width:120px;height:120px;border-radius:50%;border:3px solid var(--ink);object-fit:cover;justify-self:center}
+/* cases */
+.caseRow{display:grid;grid-template-columns:1fr 40px 1fr 40px 1.2fr;gap:8px;align-items:center}
+@media (max-width:820px){.caseRow{grid-template-columns:1fr}}
+.cpart{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:8px;text-align:center;box-shadow:var(--shadow);cursor:pointer}
+.cpart img{width:100%;border-radius:12px;aspect-ratio:1/1;object-fit:cover}
+.cpart .lab{font-weight:900;font-size:18px;margin-top:4px}
+.cpart .why{display:none;background:var(--paper2);border-radius:12px;padding:8px;margin-top:6px;font-size:16px;line-height:1.5;text-align:left}
+.cpart.open .why{display:block}
+.cpart.res{background:#FFFBEF;border-color:var(--red)}
+.op{font-size:40px;font-weight:900;text-align:center}
+.roleTag{display:inline-block;border-radius:999px;color:#fff;padding:1px 10px;font-size:14px;font-weight:900;margin-bottom:4px}
+.roleTag.a{background:var(--red)} .roleTag.b{background:var(--teal)}
+/* dish picker */
+.dishGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;margin:8px 0}
+.dpick{border:3px solid var(--ink);border-radius:16px;background:#fff;padding:5px;text-align:center;font-weight:900;font-size:15px}
+.dpick img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;margin-bottom:3px}
+.abBox.a .dpick.on{background:var(--red);color:#fff}
+.abBox.b .dpick.on{background:var(--teal);color:#fff}
+.roleNote{font-size:16px;color:var(--ink2);margin:0 0 6px}
+/* builder */
+.builder{display:grid;gap:14px}
+.slot{border:3px solid var(--ink);border-radius:20px;padding:12px 14px;background:#fff}
+.slot.a{background:#FFF3F0}.slot.b{background:#EFF8F6}.slot.c{background:#FFFBEA}
+.slot h3{margin:0 0 6px;font-size:21px;display:flex;align-items:center;gap:8px}
+.slot .mini{width:56px;height:56px;border-radius:50%;object-fit:cover;border:3px solid var(--ink)}
+.howGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.how{border:3px solid var(--ink);border-radius:16px;background:#fff;padding:10px;font-size:17px;font-weight:900;text-align:left;line-height:1.35}
+.how span{display:block;font-size:14px;font-weight:500;color:var(--ink2);margin-top:2px}
+.how.on{background:var(--mustard)}
+/* dish frame with pins */
+.pinLayer{position:absolute;inset:0;z-index:2}
+.pin{position:absolute;transform:translate(-50%,-100%);pointer-events:none;display:flex;flex-direction:column;align-items:center}
+.pin .lbl2{border:3px solid var(--ink);border-radius:999px;color:#fff;font-weight:900;font-size:15px;padding:3px 10px;white-space:nowrap;max-width:230px;overflow:hidden;text-overflow:ellipsis;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.pin .dot{width:18px;height:18px;border-radius:50%;border:3px solid #fff;margin-top:3px;box-shadow:0 0 0 2px var(--ink)}
+.pin.a .lbl2,.pin.a .dot{background:var(--red)} .pin.b .lbl2,.pin.b .dot{background:var(--teal)}
+.pinBar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.bigGo{font-size:24px;padding:14px 26px}
+.genNote{background:var(--blue2);border:3px solid var(--blue);border-radius:16px;padding:10px 14px;margin-top:12px;font-size:17px;line-height:1.55}
+.emptyDish{display:grid;place-items:center;height:100%;text-align:center;font-size:20px;font-weight:900;padding:20px;color:var(--ink2)}
+/* clothes */
+.manq{position:relative}
+.manq .ph{position:relative}
+.manq .ph img{width:100%;display:block;border-radius:16px;border:3px solid var(--ink);background:#fff}
+.hs{position:absolute;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;border:3px solid var(--ink);background:var(--mustard);font-weight:900;font-family:Fredoka;display:grid;place-items:center;font-size:19px;padding:0;animation:pulse 1.6s infinite;z-index:2}
+.hs.on{background:var(--red);color:#fff;animation:none}
+.ccard .f img{width:100%;height:200px;object-fit:contain;border-radius:12px}
+.pcard img.face{width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid var(--ink);display:block;margin:0 auto}
+.keybox{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.keybox input{flex:1;min-width:240px;border:3px solid var(--ink);border-radius:12px;padding:8px 10px;font-size:16px}
+</style>
+</head>
+<body>
+<div class="awning"></div>
+<header class="topbar">
+  <button class="pill" onclick="go('home')">🏠 市集入口</button>
+  <h1>家鄉文化市集：我的跨國料理開賣啦！</h1>
+  <button class="pill hot" onclick="go('wall')">🖼️ 海報牆</button>
+</header>
+<main>
+<!-- HOME -->
+<section class="view" id="v-home">
+  <div class="hero">
+    <p>四年級社會・第四單元〈家鄉的多元文化〉</p>
+    <h2>歡迎光臨 <span>家鄉文化市集</span>！</h2>
+  </div>
+  <img class="heroImg" src="img/hero.jpg" alt="熱鬧的家鄉文化市集">
+  <p class="hero" style="font-size:19px;color:var(--ink2)">逛逛每一個攤位：先觀察 👀、再動手 ✋，最後用一句話說出你的發現 💬</p>
+  <div class="stalls" id="stalls"></div>
+  <details class="card teacher">
+    <summary>🧑‍🏫 老師看這裡：使用說明與設定</summary>
+    <ul>
+      <li>每一站只有一個主要操作，可投影全班一起做，也可在 iPad 上個別操作；可隨時回頭修改、重試，不計分、不限時。</li>
+      <li>「語音輸入你的想法」：請學生點文字框，再按 iPad 鍵盤上的 🎤 聽寫，或直接打字。全程只接收文字。</li>
+      <li>主線：②創意廚房（選 A、B → 決定怎麼融合 → 做出成品圖 → 標出特色）→ ③菜單、給顧客看、做成海報。①④⑤可作前導或分站，⑥驗收挑戰用於課末。</li>
+      <li>作品只存在這台裝置的瀏覽器裡。要留存請按「下載海報」，或長按海報圖片存到相簿。</li>
+      <li>網站插圖皆為 AI 繪製的示意圖；服飾細節請以課本 p.60–63 照片為準，命名站人物為虛構角色。</li>
+    </ul>
+    <p style="margin-bottom:4px"><b>AI 生圖金鑰（Pollinations，pk_ 開頭）</b>　<span id="keyState" class="hint"></span></p>
+    <div class="keybox"><input id="keyInput" placeholder="貼上 pk_ 開頭的金鑰（只存在這台裝置）"><button class="pill teal" id="keySave">儲存</button><button class="pill" id="keyClear">清除</button></div>
+    <p class="hint">沒有金鑰或網路被擋時，「做出我的料理」會改成用 A、B 兩道料理的插圖組成「料理設計示意圖」，課程一樣能進行。</p>
+  </details>
+</section>
+
+<!-- S1 -->
+<section class="view" id="v-s1">
+  <div class="stationHead"><div class="badge">🍚</div><div><h2>第一站｜同樣是米，怎麼變成不同料理？</h2><p>依序點開料理卡，再挑兩張並排比一比。</p></div></div>
+  <div class="riceStage">
+    <div class="riceBowl card"><img src="img/r_rice.jpg" alt="一碗米飯"><br><span class="tag">桌上的一碗米</span><p class="hint" id="riceCount"></p></div>
+    <div><div class="riceCards" id="riceCards"></div><p class="hint" style="margin-top:10px">💡 四張都打開後，點兩張卡片就能並排比較（再點一次可以取消）。</p></div>
+  </div>
+  <div class="compare card" id="riceCompare"></div>
+  <div class="question">同樣從米出發，這兩道料理哪裡不一樣？</div>
+  <div class="speak" data-key="s1"></div>
+  <div class="nav"><span></span><button class="pill hot" onclick="go('s2')">下一站：創意廚房 ➜</button></div>
+</section>
+
+<!-- S2 -->
+<section class="view" id="v-s2">
+  <div class="stationHead"><div class="badge" style="background:var(--red2)">👩‍🍳</div><div><h2>第二站｜創意廚房：A＋B 合成一道新料理</h2><p>新料理＝保留 A 的特色 ＋ 加入 B 的特色</p></div></div>
+  <div class="steps" id="kSteps">
+    <button data-k="0" class="on">👀 課本案例</button>
+    <button data-k="1">① 選兩道料理</button>
+    <button data-k="2">② 決定怎麼融合</button>
+    <button data-k="3">③ 看見新料理</button>
+  </div>
+
+  <div class="kstep on" id="k0">
+    <div class="card">
+      <div class="caseTabs" id="caseTabs"></div>
+      <div class="caseRow" id="caseRow"></div>
+      <p class="hint">點每一張卡片，看看新料理「保留了 A 的什麼」、「加入了 B 的什麼」、「怎麼結合」。（課本 p.58–59）</p>
+    </div>
+    <div class="nav"><span></span><button class="pill hot" onclick="kGo(1)">換我設計！➜</button></div>
+  </div>
+
+  <div class="kstep" id="k1">
+    <div class="grid2">
+      <div class="abBox a">
+        <h3><span class="abtag a">A</span>主角料理</h3>
+        <p class="roleNote">新料理會<b>保留它的外型或做法</b>（像米漢堡保留漢堡的外型）。</p>
+        <div class="dishGrid" id="aGrid"></div>
+        <label class="lbl">或自己寫料理名稱</label>
+        <input class="field" id="aName" maxlength="12" placeholder="例如：臺式蔥油餅">
+        <label class="lbl">來自哪裡？（可依資料填寫，沒把握可以留空）</label>
+        <input class="field" id="aFrom" maxlength="12" placeholder="例如：臺灣">
+      </div>
+      <div class="abBox b">
+        <h3><span class="abtag b">B</span>加入的料理</h3>
+        <p class="roleNote">新料理會<b>加入它的食材或味道</b>（像米漢堡加入東方的米飯）。</p>
+        <div class="dishGrid" id="bGrid"></div>
+        <label class="lbl">或自己寫料理名稱</label>
+        <input class="field" id="bName" maxlength="12" placeholder="例如：韓式泡菜">
+        <label class="lbl">來自哪裡？（可依資料填寫，沒把握可以留空）</label>
+        <input class="field" id="bFrom" maxlength="12" placeholder="例如：韓國">
+      </div>
+    </div>
+    <div class="nav"><button class="pill" onclick="kGo(0)">⬅ 案例</button><button class="pill hot" onclick="kGo(2)">下一步：決定怎麼融合 ➜</button></div>
+  </div>
+
+  <div class="kstep" id="k2">
+    <div class="builder">
+      <div class="slot a"><h3><img class="mini" id="aMini" alt=""><span class="abtag a">A</span>保留 <span id="aT"></span> 的什麼？</h3>
+        <div class="chips" id="keepChips"></div><input class="field" id="keep" maxlength="16" placeholder="自己寫，例如：金黃酥脆的餅皮"></div>
+      <div class="slot b"><h3><img class="mini" id="bMini" alt=""><span class="abtag b">B</span>加入 <span id="bT"></span> 的什麼？</h3>
+        <div class="chips" id="bringChips"></div><input class="field" id="bring" maxlength="16" placeholder="自己寫，例如：酸辣爽脆的泡菜"></div>
+      <div class="slot c"><h3>🔗 B 的特色要放在哪裡？</h3>
+        <div class="howGrid" id="howGrid"></div>
+        <div id="replaceBox" style="display:none;margin-top:8px"><label class="lbl">取代 A 原本的什麼？</label><input class="field" id="replaceWhat" maxlength="10" placeholder="例如：麵包"></div>
+      </div>
+    </div>
+    <div class="sketch" id="sketch"></div>
+    <div class="nav"><button class="pill" onclick="kGo(1)">⬅ 換料理</button><button class="pill hot" onclick="kGo(3)">下一步：看見新料理 ➜</button></div>
+  </div>
+
+  <div class="kstep" id="k3">
+    <div class="dishStage">
+      <div>
+        <div class="dishFrame" id="dishFrame">
+          <span class="stamp" id="dishStamp">還沒做料理</span>
+          <div id="dishHolder" style="width:100%;height:100%"></div>
+          <div class="pinLayer" id="pinLayer"></div>
+          <div class="loading" id="aiLoading"><div><div class="pot">🍳</div>AI 廚師烹飪中…<br><small class="hint">大約 5–30 秒</small></div></div>
+        </div>
+        <div class="pinBar" id="pinBar" style="display:none">
+          <b>📍 在圖上標出特色：</b>
+          <button class="chip a on" data-p="a">A 的特色在這裡</button>
+          <button class="chip b" data-p="b">B 的特色在這裡</button>
+        </div>
+        <div class="warn" id="aiWarn"></div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="sketch" id="sketch3" style="margin-top:14px"></div>
+          <label class="lbl">想補充外觀嗎？（可留空）</label>
+          <input class="field" id="extra" maxlength="24" placeholder="例如：捲成長條、切開看得到餡">
+          <div class="row" style="margin-top:14px">
+            <button class="pill red bigGo" id="cookBtn">✨ 做出我的料理</button>
+            <button class="pill" id="againBtn" style="display:none">🔄 換一張</button>
+          </div>
+          <div class="genNote" id="genNote">按下按鈕後，AI 會依照你的設計，畫出<b>一道完整料理的成品圖</b>。</div>
+        </div>
+        <div class="compareNote" id="cmpNote" style="display:none">🔍 <b>比一比：</b>圖上看得到 A 的「<span id="cA"></span>」和 B 的「<span id="cB"></span>」嗎？<br>點上面的按鈕，在圖上各貼一個標籤。不像你想的？回到「② 決定怎麼融合」改寫，再做一次！</div>
+      </div>
+    </div>
+    <div class="question">你保留了 A 的什麼、加入了 B 的什麼？請在成品圖上指給同學看。</div>
+    <div class="speak" data-key="s2"></div>
+    <div class="nav"><button class="pill" onclick="kGo(2)">⬅ 修改融合方式</button><button class="pill hot" onclick="go('s3')">下一站：寫菜單 ➜</button></div>
+  </div>
+</section>
+
+<!-- S3 -->
+<section class="view" id="v-s3">
+  <div class="stationHead"><div class="badge" style="background:var(--teal2)">📋</div><div><h2>第三站｜替新料理寫一張菜單</h2><p>用兩三句話介紹你的料理，再請同學當顧客！</p></div></div>
+  <div class="dishStage">
+    <div>
+      <div class="dishFrame"><span class="stamp" id="menuStamp"></span><div id="menuDish" style="width:100%;height:100%"></div><div class="pinLayer" id="menuPins"></div></div>
+      <p class="hint" style="text-align:center">想換圖？回到 <a href="#s2" onclick="setTimeout(()=>kGo(3))">創意廚房</a> 修改。</p>
+    </div>
+    <div class="menuBoard">
+      <label>🍽️ 料理名稱</label>
+      <input id="mName" maxlength="14" placeholder="例如：泡菜蔥油餅捲">
+      <label style="margin-top:14px">📝 介紹詞　<span style="font-size:15px;font-weight:500">🎤 語音輸入你的想法</span></label>
+      <textarea id="mIntro" maxlength="160" placeholder="點這裡，按鍵盤上的 🎤 說出來，或直接打字"></textarea>
+      <small>寫出：① 兩種特色怎麼結合　② 吃起來可能有什麼口感　③ 一句邀請試吃的話</small>
+      <div class="chips" id="starterChips"></div>
+      <div class="chips" id="textureChips"></div>
+      <button class="pill" style="margin-top:6px" onclick="this.nextElementSibling.classList.toggle('on')">👀 看示範</button>
+      <div class="demo">「這是泡菜蔥油餅捲。我把金黃酥脆的蔥油餅捲起來，包進酸辣爽脆的韓式泡菜。喜歡酸辣口味的你，要不要來一口？」</div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:18px;justify-content:center">
+    <button class="pill teal" onclick="openCustomer()" style="font-size:21px">👥 給顧客看</button>
+    <button class="pill red" onclick="openPoster()" style="font-size:21px">🖨️ 做成海報</button>
+  </div>
+  <div class="nav"><button class="pill" onclick="go('s2')">⬅ 創意廚房</button><button class="pill hot" onclick="go('s4')">下一站：服飾展示窗 ➜</button></div>
+</section>
+
+<!-- S4 -->
+<section class="view" id="v-s4">
+  <div class="stationHead"><div class="badge" style="background:var(--blue2)">👘</div><div><h2>第四站｜一件衣服，可以穿出什麼故事？</h2><p>點衣服上的 <b>數字圓點</b>，比較哪些設計保留下來、哪些因場合而改變。</p></div></div>
+  <div class="window">
+    <div class="mannequins">
+      <div class="manq"><h4>傳統客家藍衫</h4><div class="ph" id="mqA"><img src="img/k_trad.jpg" alt="傳統客家藍衫"></div></div>
+      <div class="manq"><h4>創意設計的藍衫禮服</h4><div class="ph" id="mqB"><img src="img/k_gown.jpg" alt="藍衫禮服"></div></div>
+    </div>
+    <div class="hotInfo" id="hotInfo"><div><b>傳統藍衫</b><br><span class="hint">點一個數字圓點開始比較</span></div><div><b>藍衫禮服</b></div></div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+  <p class="hint">※ AI 示意插圖。請對照課本 p.61「六堆運動會上的藍衫」與 p.62「藍衫禮服」照片觀察。</p>
+  <h3 style="margin:22px 0 10px;font-size:24px">🃏 傳統服飾卡：點卡片翻面，看穿著場合與文化意義</h3>
+  <div class="ccards" id="ccards"></div>
+  <div class="question">你從哪個地方看出，設計師把傳統服飾的特色帶進了新衣服？</div>
+  <div class="speak" data-key="s4"></div>
+  <div class="nav"><button class="pill" onclick="go('s3')">⬅ 菜單</button><button class="pill hot" onclick="go('s5')">下一站：語言與名字 ➜</button></div>
+</section>
+
+<!-- S5 -->
+<section class="view" id="v-s5">
+  <div class="stationHead"><div class="badge" style="background:var(--green2)">🗣️</div><div><h2>第五站｜家鄉裡，聽見不同語言與名字</h2><p>先到車站聽廣播，再到市集報到處認識新朋友。</p></div></div>
+  <div class="steps" id="lSteps"><button class="on" data-l="0">🚉 場景一：捷運車站</button><button data-l="1">🏷️ 場景二：市集報到處</button></div>
+  <div class="kstep on" id="l0">
+    <div class="station">
+      <div class="signBoard"><div class="big">北投</div><div class="en">Beitou</div><div class="old">「北投」地名和凱達格蘭族語 Kipatauw 有關（課本 p.65）</div></div>
+      <div class="langBtns" id="langBtns"></div>
+      <div class="bubble" id="langBubble">點上面的語言按鈕，聽聽看站內廣播怎麼說。</div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <b style="font-size:19px">觀察一下：這些廣播說的，是不是同一個地方？</b>
+      <div class="row" style="margin-top:8px"><button class="pill" onclick="langAns(true)">是同一個地方</button><button class="pill" onclick="langAns(false)">是不同的地方</button></div>
+      <div class="fb" id="langFb"></div>
+    </div>
+    <div class="nav"><span></span><button class="pill hot" onclick="lGo(1)">前往市集報到處 ➜</button></div>
+  </div>
+  <div class="kstep" id="l1">
+    <p style="font-size:18px">市集報到處來了三位新朋友（虛構角色）。<b>點名牌</b>，聽聽他們名字的故事：</p>
+    <div class="people" id="people"></div>
+    <div class="compareNote">📌 命名方式會因族群、家庭而不同：有的名字帶著家人的祝福；有些原住民族會在名字後面加上父親或母親的名字；姓也可能跟爸爸或跟媽媽。</div>
+    <div class="card" style="margin-top:14px"><b style="font-size:19px">第一次見面，遇到不熟悉的名字，你會選哪一句？</b><div class="opts" id="nameOpts"></div><div class="fb" id="nameFb"></div></div>
+    <div class="question">遇到自己不熟悉的名字，你可以怎麼確認，讓對方感受到尊重？</div>
+    <div class="speak" data-key="s5"></div>
+    <div class="nav"><button class="pill" onclick="lGo(0)">⬅ 車站</button><button class="pill hot" onclick="go('quiz')">前往驗收挑戰 ➜</button></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="view" id="v-quiz">
+  <div class="stationHead"><div class="badge" style="background:var(--pink)">🏆</div><div><h2>驗收挑戰站</h2><p>四個小遊戲，答錯也沒關係，看看說明再試一次！</p></div></div>
+  <div class="qtabs" id="qtabs">
+    <button class="pill on" data-q="0">🔗 米食連連看</button><button class="pill" data-q="1">🃏 服飾翻牌配對</button><button class="pill" data-q="2">🧺 融合料理分類</button><button class="pill" data-q="3">💗 尊重情境題</button>
+  </div>
+  <div class="qpane on card" id="q0"><p style="margin-top:0;font-size:18px">先點左邊的米食，再點右邊的族群，把它們連起來。</p><div class="match" id="matchBox"></div>
+    <div class="row" style="justify-content:center;margin-top:14px"><button class="pill hot" onclick="checkMatch()">✔ 對答案</button><button class="pill" onclick="initMatch()">🔄 重來</button></div><div class="scoreBar" id="matchScore"></div></div>
+  <div class="qpane card" id="q1"><p style="margin-top:0;font-size:18px">翻兩張牌，找出「服飾」和「對應的族群／意義」。</p><div class="mem" id="memBox"></div>
+    <div class="row" style="justify-content:center;margin-top:14px"><button class="pill" onclick="initMem()">🔄 重新洗牌</button></div><div class="scoreBar" id="memScore"></div></div>
+  <div class="qpane card" id="q2"><p style="margin-top:0;font-size:18px">先點一個料理，再點籃子把它放進去。哪些是<b>原本的飲食文化</b>？哪些是<b>交流後的融合與創新</b>？</p><div class="sortPool" id="sortPool"></div>
+    <div class="baskets"><div class="basket" data-b="orig" onclick="dropSort('orig')"><h4>🏠 原本的飲食文化</h4><div class="items"></div></div><div class="basket" data-b="fuse" onclick="dropSort('fuse')"><h4>✨ 融合與創新</h4><div class="items"></div></div></div>
+    <div class="row" style="justify-content:center;margin-top:14px"><button class="pill hot" onclick="checkSort()">✔ 對答案</button><button class="pill" onclick="initSort()">🔄 重來</button></div><div class="scoreBar" id="sortScore"></div></div>
+  <div class="qpane card" id="q3"><div id="sitBox"></div></div>
+</section>
+
+<!-- WALL -->
+<section class="view" id="v-wall">
+  <div class="stationHead"><div class="badge">🖼️</div><div><h2>創意料理海報牆</h2><p>這台裝置做過的海報都貼在這裡。點海報可以放大、下載。</p></div></div>
+  <div class="wall" id="wall"></div>
+  <p class="hint" id="wallEmpty">還沒有海報喔！到 <a href="#s3">第三站</a> 做一張吧。</p>
+</section>
+</main>
+
+<div class="overlay" id="custOv"><div class="sheet">
+  <button class="pill close" onclick="closeOv('custOv')">✖ 關閉</button>
+  <h2 style="margin:4px 0 12px">👥 給顧客看</h2>
+  <div class="custGrid">
+    <div>
+      <div class="row" style="margin-bottom:8px;align-items:center"><b>顧客點圖貼標籤：</b><button class="chip a on" id="stA" onclick="setSticker('a')">我看到 A 的特色</button><button class="chip b" id="stB" onclick="setSticker('b')">我看到 B 的特色</button></div>
+      <div class="custImg" id="custImg"></div>
+      <div class="row" style="margin-top:10px"><button class="pill" onclick="clearStickers()">🧽 清除標籤</button><button class="pill blue" id="revealBtn" onclick="revealDesign()">🔍 揭曉設計師的標示</button></div>
+    </div>
+    <div>
+      <div class="custMenu"><span class="ourTag">我們的創意料理</span><h3 id="custName"></h3><p id="custIntro"></p></div>
+      <div class="card" style="margin-top:14px">
+        <b>顧客回饋：我從哪裡看出兩種料理特色？</b>
+        <div class="speak" style="margin-top:8px;border-style:solid"><label><span class="mic">🎤</span>語音輸入你的想法</label><textarea placeholder="例如：我從外面金黃色的餅皮看出蔥油餅，從切面紅紅的餡看出泡菜。"></textarea></div>
+        <p style="margin:12px 0 6px;font-weight:900">你想試吃嗎？兩種選擇都很棒 👍</p>
+        <div class="row"><button class="pill" onclick="toast('謝謝你願意嘗試新口味！😋')">😋 我想試吃</button><button class="pill" onclick="toast('謝謝你禮貌的回應，先欣賞也很好！🙂')">🙂 我先欣賞就好</button></div>
+      </div>
+      <button class="pill hot" style="margin-top:14px;width:100%" onclick="closeOv('custOv');$('#mIntro').focus()">✏️ 設計師：依回饋修改一句介紹詞</button>
+    </div>
+  </div>
+</div></div>
+
+<div class="overlay" id="posterOv"><div class="sheet">
+  <button class="pill close" onclick="closeOv('posterOv')">✖ 關閉</button>
+  <h2 style="margin:4px 0 12px">🖨️ 我的料理推廣海報</h2>
+  <div class="grid2">
+    <div><canvas id="posterCanvas" width="1080" height="1440"></canvas><img id="posterImg" class="posterImg" style="display:none" alt="海報"></div>
+    <div>
+      <label class="lbl">主廚署名（可寫座號或暱稱）</label><input class="field" id="chef" maxlength="14" placeholder="例如：4年2班 7號 小廚師">
+      <label class="lbl">海報顏色</label><div class="styleDots" id="styleDots"></div>
+      <label class="lbl">一句推廣標語（可留空）</label><input class="field" id="slogan" maxlength="14" placeholder="例如：酸辣酥脆，一口愛上！">
+      <div class="row" style="margin-top:16px"><button class="pill red" onclick="downloadPoster()">⬇️ 下載海報</button><button class="pill teal" onclick="savePosterToWall()">📌 貼到海報牆</button></div>
+      <p class="hint">iPad：按「下載海報」後，若沒有跳出下載，就在出現的海報圖片上<b>長按 → 加入照片</b>。</p>
+    </div>
+  </div>
+</div></div>
+
+<div class="overlay" id="wallOv"><div class="sheet" style="max-width:640px;text-align:center"><button class="pill close" onclick="closeOv('wallOv')">✖</button><img id="wallBig" style="width:100%;border-radius:14px;margin-top:40px" alt=""><p class="hint">長按圖片可以儲存到相簿</p><div class="row" style="justify-content:center"><button class="pill red" id="wallDl">⬇️ 下載</button><button class="pill" id="wallDel">🗑️ 從海報牆移除</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= utilities ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const LS={get(k,d){try{const v=localStorage.getItem('hcm2_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('hcm2_'+k,JSON.stringify(v));return true}catch(e){return false}}};
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2400)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function closeOv(id){$('#'+id).classList.remove('on')}
+function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src})}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+const FONT=(w,s)=>`${w} ${s}px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif`;
+
+/* ================= AI key (never stored in the code) ================= */
+(function(){const p=new URLSearchParams(location.search);const k=p.get('k');if(k&&/^(sk|pk)_[A-Za-z0-9]+$/.test(k)){LS.set('aiKey',k);history.replaceState(null,'',location.pathname+location.hash);setTimeout(()=>toast('✅ 這台裝置已設定好 AI 生圖金鑰'),600)}})();
+function aiKey(){return LS.get('aiKey','')}
+function renderKeyState(){const k=aiKey();$('#keyState').textContent=k?`已設定（${k.slice(0,6)}…${k.slice(-3)}）`:'尚未設定';$('#keyInput').value=''}
+$('#keySave').onclick=()=>{const v=$('#keyInput').value.trim();if(!/^(sk|pk)_[A-Za-z0-9]+$/.test(v)){toast('金鑰格式不對，應該是 sk_ 或 pk_ 開頭');return}LS.set('aiKey',v);renderKeyState();toast('已儲存在這台裝置')};
+$('#keyClear').onclick=()=>{LS.set('aiKey','');renderKeyState();toast('已清除')};
+renderKeyState();
+
+/* ================= router ================= */
+const VIEWS=['home','s1','s2','s3','s4','s5','quiz','wall'];
+function go(v){if(location.hash!=='#'+v)location.hash=v;else show(v)}
+function show(v){if(!VIEWS.includes(v))v='home';$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='s3')renderMenu();if(v==='wall')renderWall();if(v==='s2')kGo(kStep,true)}
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+
+/* ================= home ================= */
+const STALLS=[
+ {id:'s1',no:'第1站',ico:'🍚',t:'米食攤',d:'同樣是米，怎麼變成碗粿、粄條、竹筒飯、河粉？',c:'var(--mustard)'},
+ {id:'s2',no:'第2站',ico:'👩‍🍳',t:'創意廚房',d:'A＋B 合成一道跨國新料理，做出成品圖！',c:'var(--red)',star:1},
+ {id:'s3',no:'第3站',ico:'📋',t:'菜單與海報',d:'寫介紹詞、請同學當顧客、做成推廣海報。',c:'var(--teal)',star:1},
+ {id:'s4',no:'第4站',ico:'👘',t:'服飾展示窗',d:'傳統藍衫和藍衫禮服，哪裡保留、哪裡改變？',c:'var(--blue)'},
+ {id:'s5',no:'第5站',ico:'🗣️',t:'語言與名字',d:'車站的多語廣播、市集報到處的名字故事。',c:'var(--green)'},
+ {id:'quiz',no:'挑戰',ico:'🏆',t:'驗收挑戰站',d:'連連看、翻牌配對、分類、情境題。',c:'var(--pink)'}];
+$('#stalls').innerHTML=STALLS.map(s=>`<button class="stall ${s.star?'star':''}" onclick="go('${s.id}')"><div class="roof" style="background:repeating-linear-gradient(90deg,${s.c} 0 30px,#fff 30px 60px)"></div><span class="no">${s.no}</span><div class="ico">${s.ico}</div><h3>${s.t}</h3><p>${s.d}</p></button>`).join('');
+
+function bindSpeak(root){(root||document).querySelectorAll('.speak[data-key]').forEach(box=>{const k=box.dataset.key;
+  box.innerHTML=`<label><span class="mic">🎤</span>語音輸入你的想法　<span class="saved">已自動保存 ✓</span></label><textarea placeholder="點這裡，再按鍵盤上的 🎤 說出你的發現，或直接打字（一句話就好）" maxlength="200"></textarea><small>💡 可以這樣開頭：「我發現……」「我覺得不一樣的地方是……」</small>`;
+  const ta=box.querySelector('textarea'),sv=box.querySelector('.saved');ta.value=LS.get('speak_'+k,'');
+  ta.addEventListener('input',()=>{LS.set('speak_'+k,ta.value);sv.classList.add('on');clearTimeout(sv._t);sv._t=setTimeout(()=>sv.classList.remove('on'),1200)})})}
+bindSpeak();
+
+/* ================= S1 rice ================= */
+const RICE=[
+ {id:'wangguei',img:'r_wangguei',name:'碗粿',grp:'閩南族群',shape:'圓圓一碗，軟軟的米糕',how:'米磨成米漿，倒進碗裡蒸熟',eat:'加上肉燥、淋醬汁，用竹片切著吃',line:'把米漿倒進碗裡蒸熟，常加上肉燥、淋上醬汁吃。'},
+ {id:'bantiao',img:'r_bantiao',name:'炒粄條',grp:'客家族群',shape:'又寬又扁的白色長條',how:'米漿蒸成薄片，切成寬條再下鍋炒',eat:'和豆芽菜、韭菜、肉絲一起炒',line:'米漿蒸成薄片切成寬條，和豆芽、韭菜、肉絲一起炒。'},
+ {id:'bamboo',img:'r_bamboo',name:'竹筒飯',grp:'原住民族',shape:'長長的圓柱形，裝在竹子裡',how:'米和水放進竹筒，用火烤熟',eat:'剖開竹筒，吃到有竹子清香的米飯',line:'把米和水放進竹筒裡，用火烤熟，吃的時候剖開竹筒。'},
+ {id:'pho',img:'d_pho',name:'越南河粉',grp:'越南新住民',shape:'扁平細長的白色粉條',how:'米做成粉條，加入熱湯',eat:'配牛肉片、豆芽和香草，連湯一起吃',line:'米做成扁平的粉條，加入熱湯、牛肉片和香草一起吃。'}];
+let riceOpen=new Set(LS.get('riceOpen',[])),ricePick=[];
+function renderRice(){
+  $('#riceCards').innerHTML=RICE.map((r,i)=>`<div class="rcard ${riceOpen.has(r.id)?'':'closed'} ${ricePick.includes(r.id)?'pick':''}" data-id="${r.id}"><span class="pickmark">${ricePick.indexOf(r.id)+1}</span><div class="cover">🍚 料理卡 ${i+1}<br><span class="hint">點我翻開</span></div><div class="inner"><img src="img/${r.img}.jpg" alt="${r.name}"><h4>${r.name}</h4><span class="grp">${r.grp}</span><p>${r.line}</p></div></div>`).join('');
+  $('#riceCount').textContent=`已打開 ${riceOpen.size} / 4 張料理卡`;
+  $$('#riceCards .rcard').forEach(c=>c.onclick=()=>{const id=c.dataset.id;
+    if(!riceOpen.has(id)){riceOpen.add(id);LS.set('riceOpen',[...riceOpen]);renderRice();return}
+    if(riceOpen.size<4){toast('先把四張料理卡都打開喔！');return}
+    if(ricePick.includes(id))ricePick=ricePick.filter(x=>x!==id);else{ricePick.push(id);if(ricePick.length>2)ricePick.shift()}
+    renderRice();renderRiceCompare()})}
+function renderRiceCompare(){const box=$('#riceCompare');if(ricePick.length<2){box.classList.remove('on');return}
+  const [a,b]=ricePick.map(id=>RICE.find(r=>r.id===id));box.classList.add('on');
+  box.innerHTML=`<h3 style="margin:0 0 10px">🔍 並排比一比：${a.name} vs ${b.name}</h3><div class="cmpImgs"><span></span><img src="img/${a.img}.jpg" alt=""><img src="img/${b.img}.jpg" alt=""></div><div class="cmpGrid"><div class="h"></div><div class="h">${a.name}</div><div class="h">${b.name}</div>
+  <div class="h">共同的食材</div><div class="same">🍚 都是用「米」做的！</div>
+  ${[['形狀','shape'],['怎麼做','how'],['怎麼吃','eat']].map(([t,k])=>`<div class="h">${t}</div><div class="clickme hide">${a[k]}</div><div class="clickme hide">${b[k]}</div>`).join('')}</div><p class="hint">先指著圖片說說看，再點格子對照。</p>`;
+  box.querySelectorAll('.clickme').forEach(c=>c.onclick=()=>c.classList.remove('hide'))}
+renderRice();
+
+/* ================= S2 data ================= */
+const DISH={
+ '臺式蔥油餅':{img:'d_scallion',from:'臺灣',keep:['金黃酥脆的餅皮','一層一層的做法','煎得香香的做法'],bring:['香香的蔥花','酥脆的餅皮']},
+ '日式飯糰':{img:'d_onigiri',from:'日本',keep:['三角形的飯糰外型','外面包海苔的做法'],bring:['白飯和海苔']},
+ '義式披薩':{img:'d_pizza',from:'義大利',keep:['香脆的披薩餅皮','放進烤箱烘烤的做法'],bring:['牽絲的起司','酸甜的番茄醬']},
+ '美式漢堡':{img:'d_burger',from:'美國',keep:['圓圓的漢堡外型','上下夾起來的吃法'],bring:['多汁的肉排','起司片']},
+ '墨西哥捲餅':{img:'d_burrito',from:'墨西哥',keep:['薄餅捲成長條的外型'],bring:['豆子和蔬菜','酸辣的莎莎醬']},
+ '臺式刈包':{img:'d_guabao',from:'臺灣',keep:['軟軟的刈包外皮','對折夾餡的吃法'],bring:['花生粉和香菜','香香的滷肉']},
+ '客家粄條':{img:'d_banmian',from:'臺灣（客家）',keep:['又寬又Q的粄條','湯麵的吃法'],bring:['寬寬Q Q的粄條','油蔥的香味']},
+ '臺式滷肉飯':{img:'d_luroufan',from:'臺灣',keep:['白飯上鋪料的吃法'],bring:['香噴噴的滷肉燥','鹹香的滷汁']},
+ '娘惹糕':{img:'d_kueh',from:'東南亞',keep:['色彩繽紛的糯米糕外型','蒸糕的做法'],bring:['東南亞香料的香氣','軟Q的糯米糕']},
+ '韓式泡菜':{img:'d_kimchi',from:'韓國',keep:['醃漬的做法'],bring:['酸辣爽脆的泡菜','紅通通的辣醬']},
+ '越南河粉':{img:'d_pho',from:'越南',keep:['湯河粉的吃法'],bring:['滑溜的河粉','九層塔和豆芽','清爽的牛肉湯']},
+ '泰式打拋豬':{img:'d_gapao',from:'泰國',keep:['炒肉配飯的吃法'],bring:['香辣的打拋豬肉','九層塔的香氣']},
+ '日式咖哩':{img:'d_curry',from:'日本',keep:['咖哩配飯的吃法'],bring:['濃濃的咖哩醬']},
+ '臺灣臭豆腐':{img:'d_stinkytofu',from:'臺灣',keep:['外酥內嫩的油炸做法'],bring:['外酥內嫩的臭豆腐','臺式泡菜']},
+ '韓式炸雞':{img:'d_kfc',from:'韓國',keep:['裹粉油炸的做法'],bring:['酥脆的炸雞','甜辣醬']},
+ '紅豆芋頭':{img:'d_redbean',from:'臺灣',keep:['綿密香甜的口感'],bring:['香甜的紅豆','綿密的芋頭泥']}};
+const A_LIST=['臺式蔥油餅','日式飯糰','義式披薩','美式漢堡','墨西哥捲餅','臺式刈包','客家粄條','臺式滷肉飯','娘惹糕'];
+const B_LIST=['韓式泡菜','越南河粉','泰式打拋豬','日式咖哩','臺灣臭豆腐','韓式炸雞','紅豆芋頭','臺式蔥油餅','義式披薩'];
+const HOW={
+ inside:{t:'包在裡面',d:'當內餡',s:(b)=>`把 B 的「${b}」包在裡面當內餡`,p:(B,b)=>`把${B}的${b}包在裡面當內餡，料理切開一半，清楚看得到內餡的切面`},
+ top:{t:'鋪在上面',d:'當配料',s:(b)=>`把 B 的「${b}」鋪在上面當配料`,p:(B,b)=>`把${B}的${b}鋪在料理上面當配料，從上面清楚看得到`},
+ middle:{t:'夾在中間',d:'一層一層',s:(b)=>`把 B 的「${b}」夾在中間`,p:(B,b)=>`把${B}的${b}夾在中間，從側面看得到夾層`},
+ sauce:{t:'做成醬汁',d:'淋在上面或沾著吃',s:(b)=>`把 B 的「${b}」做成醬汁`,p:(B,b)=>`把${B}的${b}做成醬汁淋在上面`},
+ replace:{t:'取代一部分',d:'像米飯取代麵包',s:(b,x)=>`用 B 的「${b}」取代原本的${x||'＿＿'}`,p:(B,b,x)=>`用${B}的${b}取代原本的${x||'其中一部分'}`}};
+const CASES={
+ burger:{tab:'🍔 米漢堡',A:['d_burger','西方的漢堡','保留漢堡「上下夾起來」的圓形外型。'],B:['r_rice','東方的米飯','加入東方以米為主食的習慣。'],R:['c_riceburger','米漢堡','<b>用米飯取代麵包</b>：漢堡傳到以米食為主的東方社會後，演變出的新食物。']},
+ pizza:{tab:'🍕 臭豆腐披薩',A:['d_pizza','義大利的披薩','保留披薩的餅皮和烘烤的做法。'],B:['d_stinkytofu','臺灣的臭豆腐','加入臺灣小吃臭豆腐的特別風味。'],R:['c_tofupizza','臭豆腐披薩','<b>把臭豆腐鋪在上面當配料</b>：外國傳來的披薩，融入臺灣口味。']},
+ kueh:{tab:'🍡 娘惹糕',A:['d_kueh','東南亞的娘惹糕','保留用糯米和香料做成、色彩繽紛的糕點。'],B:['d_redbean','臺灣的紅豆芋頭','加入臺灣產的紅豆和芋頭。'],R:['c_kueh','包紅豆芋頭的娘惹糕','<b>把紅豆、芋頭包在裡面當餡料</b>：新住民媽媽用在地食材，改良成適合臺灣人的好滋味。']}};
+
+let D=LS.get('dish',null)||{};
+D=Object.assign({aName:'',aFrom:'',bName:'',bFrom:'',keep:'',bring:'',how:'',replaceWhat:'',extra:'',img:'',imgKind:'',seed:0,pins:{},mName:'',mIntro:'',slogan:''},D);
+function saveD(){if(!LS.set('dish',D)){const t=D.img;D.img='';LS.set('dish',D);D.img=t}}
+function dishImg(n){const d=DISH[n];return d?`img/${d.img}.jpg`:''}
+
+/* ---- steps ---- */
+let kStep=0;
+function kGo(n,silent){
+  if(n>=2&&(!D.aName.trim()||!D.bName.trim())){if(!silent)toast('先選好 A 和 B 兩道料理喔！');n=1}
+  if(n>=2&&D.aName.trim()===D.bName.trim()){if(!silent)toast('A 和 B 要選不同的料理喔！');n=1}
+  if(n===3&&(!D.keep.trim()||!D.bring.trim()||!D.how)){if(!silent)toast('把「保留什麼」「加入什麼」「放在哪裡」都選好，再看成品！');n=2}
+  kStep=n;$$('#kSteps button').forEach((b,i)=>{b.classList.toggle('on',i===n);b.classList.toggle('done',i<n)});$$('#v-s2 .kstep').forEach((s,i)=>s.classList.toggle('on',i===n));
+  if(n===1)renderPickers();if(n===2)renderBuilder();if(n===3)renderCook();
+  if(!silent&&location.hash!=='#s2')go('s2');}
+$$('#kSteps button').forEach(b=>b.onclick=()=>kGo(+b.dataset.k));
+
+/* ---- cases ---- */
+$('#caseTabs').innerHTML=Object.entries(CASES).map(([k,c])=>`<button class="pill" data-case="${k}">${c.tab}</button>`).join('');
+function renderCase(k){const c=CASES[k];$$('#caseTabs button').forEach(b=>b.classList.toggle('on',b.dataset.case===k));
+  const part=(p,cls,role)=>`<div class="cpart ${cls}"><span class="roleTag ${role}">${role==='a'?'A 保留':role==='b'?'B 加入':''}</span><img src="img/${p[0]}.jpg" alt="${p[1]}"><div class="lab">${p[1]}</div><div class="why">${p[2]}</div><div class="hint">點我看看</div></div>`;
+  $('#caseRow').innerHTML=part(c.A,'','a')+`<div class="op">＋</div>`+part(c.B,'','b')+`<div class="op">＝</div>`+`<div class="cpart res"><img src="img/${c.R[0]}.jpg" alt="${c.R[1]}"><div class="lab">${c.R[1]}</div><div class="why">${c.R[2]}</div><div class="hint">點我看怎麼結合</div></div>`;
+  $$('#caseRow .cpart').forEach(p=>p.onclick=()=>p.classList.toggle('open'))}
+$$('#caseTabs button').forEach(b=>b.onclick=()=>renderCase(b.dataset.case));renderCase('burger');
+
+/* ---- step 1 ---- */
+function renderPickers(){[['a',A_LIST],['b',B_LIST]].forEach(([s,list])=>{
+  $('#'+s+'Grid').innerHTML=list.map(n=>`<button class="dpick ${D[s+'Name']===n?'on':''}" data-n="${n}"><img src="${dishImg(n)}" alt="">${n}</button>`).join('');
+  $$('#'+s+'Grid .dpick').forEach(b=>b.onclick=()=>{const n=b.dataset.n,o=s==='a'?'b':'a';if(D[o+'Name']===n){toast('A 和 B 要選不同的料理喔！');return}
+    setDish(s,n);renderPickers()})})}
+function setDish(s,n){if(D[s+'Name']!==n){D[s+'Name']=n;D[s==='a'?'keep':'bring']='';D.img='';D.pins={}}
+  const d=DISH[n];if(d){D[s+'From']=d.from;$('#'+s+'From').value=d.from}$('#'+s+'Name').value=n;saveD()}
+['a','b'].forEach(s=>{const nm=$('#'+s+'Name'),fr=$('#'+s+'From');nm.value=D[s+'Name'];fr.value=D[s+'From'];
+  nm.addEventListener('input',()=>{D[s+'Name']=nm.value.trim();D[s==='a'?'keep':'bring']='';D.img='';D.pins={};const d=DISH[D[s+'Name']];if(d&&!fr.value){fr.value=d.from;D[s+'From']=d.from}saveD();$$('#'+s+'Grid .dpick').forEach(b=>b.classList.toggle('on',b.dataset.n===D[s+'Name']))});
+  fr.addEventListener('input',()=>{D[s+'From']=fr.value;saveD()})});
+
+/* ---- step 2 ---- */
+function renderBuilder(){
+  $('#aT').textContent=D.aName;$('#bT').textContent=D.bName;
+  const am=dishImg(D.aName),bm=dishImg(D.bName);$('#aMini').style.display=am?'':'none';$('#aMini').src=am;$('#bMini').style.display=bm?'':'none';$('#bMini').src=bm;
+  const kOpts=(DISH[D.aName]?.keep)||[],bOpts=(DISH[D.bName]?.bring)||[];
+  $('#keepChips').innerHTML=kOpts.length?kOpts.map(t=>`<button class="chip a ${D.keep===t?'on':''}">${t}</button>`).join(''):'<span class="hint">這道料理是你自己寫的，請在下面寫出要保留的特色（例如外型、外皮或做法）。</span>';
+  $('#bringChips').innerHTML=bOpts.length?bOpts.map(t=>`<button class="chip b ${D.bring===t?'on':''}">${t}</button>`).join(''):'<span class="hint">這道料理是你自己寫的，請在下面寫出要加入的特色（例如食材、醬料或味道）。</span>';
+  $$('#keepChips .chip').forEach(c=>c.onclick=()=>{D.keep=c.textContent;$('#keep').value=D.keep;D.img='';saveD();renderBuilder()});
+  $$('#bringChips .chip').forEach(c=>c.onclick=()=>{D.bring=c.textContent;$('#bring').value=D.bring;D.img='';saveD();renderBuilder()});
+  $('#keep').value=D.keep;$('#bring').value=D.bring;$('#replaceWhat').value=D.replaceWhat;
+  $('#howGrid').innerHTML=Object.entries(HOW).map(([k,h])=>`<button class="how ${D.how===k?'on':''}" data-h="${k}">${h.t}<span>${h.d}</span></button>`).join('');
+  $$('#howGrid .how').forEach(b=>b.onclick=()=>{D.how=b.dataset.h;D.img='';saveD();renderBuilder()});
+  $('#replaceBox').style.display=D.how==='replace'?'':'none';
+  renderSketch()}
+[['keep','keep'],['bring','bring'],['replaceWhat','replaceWhat'],['extra','extra']].forEach(([id,k])=>$('#'+id).addEventListener('input',e=>{D[k]=e.target.value.trim();if(k!=='extra')D.img='';saveD();renderSketch();
+  if(k==='keep')$$('#keepChips .chip').forEach(c=>c.classList.toggle('on',c.textContent===D.keep));if(k==='bring')$$('#bringChips .chip').forEach(c=>c.classList.toggle('on',c.textContent===D.bring))}));
+function sentenceHTML(){const h=HOW[D.how];
+  return `保留 <b class="a">${esc(D.aName||'A')}</b> 的「<b class="a">${esc(D.keep||'＿＿＿')}</b>」，<br>${h?esc(h.s(D.bring||'＿＿＿',D.replaceWhat)).replace('B 的',`<b class="b">${esc(D.bName)}</b> 的`).replace(/「(.*?)」/,'「<b class="b">$1</b>」'):`加入 <b class="b">${esc(D.bName||'B')}</b> 的「<b class="b">${esc(D.bring||'＿＿＿')}</b>」，放在 <span class="q">？</span>`}。`}
+function renderSketch(){$('#sketch').innerHTML=sentenceHTML();$('#sketch3').innerHTML=sentenceHTML()}
+
+/* ---- step 3: cook ---- */
+const BAD=/血腥|殺|死|槍|刀|炸彈|毒|屎|尿|便便|大便|屁|裸|色情|性感|酒|菸|香菸|毒品|笨蛋|白痴|垃圾|蟑螂|老鼠|蟲|人肉|ass|sex|kill|blood|gun|nude|poop/i;
+function buildPrompt(){const h=HOW[D.how];
+  return `一道完整的創意融合料理成品：以${D.aName}為基礎，保留${D.aName}的${D.keep}，${h.p(D.bName,D.bring,D.replaceWhat)}。${D.extra?D.extra+'。':''}只有這一道料理，放在白色盤子上，看起來非常好吃。可愛的兒童繪本水彩插畫風，柔和溫暖色調，乾淨的米白色背景，主體置中，畫面中沒有任何文字或字母，沒有人物。`}
+let pinMode='a';
+$$('#pinBar .chip').forEach(c=>c.onclick=()=>{pinMode=c.dataset.p;$$('#pinBar .chip').forEach(x=>x.classList.toggle('on',x===c))});
+$('#pinLayer').onclick=e=>{if(!D.img)return;const r=e.currentTarget.getBoundingClientRect();D.pins[pinMode]={x:(e.clientX-r.left)/r.width*100,y:(e.clientY-r.top)/r.height*100};saveD();drawPins($('#pinLayer'),true);
+  if(pinMode==='a'&&!D.pins.b){pinMode='b';$$('#pinBar .chip').forEach(x=>x.classList.toggle('on',x.dataset.p==='b'));toast('很好！再點一下 B 的特色在哪裡')}};
+function drawPins(layer,show){layer.innerHTML=!show?'':['a','b'].filter(k=>D.pins[k]).map(k=>{const p=D.pins[k];return `<div class="pin ${k}" style="left:${p.x}%;top:${p.y}%"><span class="lbl2">${k.toUpperCase()}｜${esc(k==='a'?D.keep:D.bring)}</span><span class="dot"></span></div>`}).join('')}
+function renderCook(){renderSketch();$('#extra').value=D.extra||'';
+  const has=!!D.img;$('#dishHolder').innerHTML=has?`<img src="${D.img}" alt="新料理">`:`<div class="emptyDish">✨<br>按右邊的「做出我的料理」<br>看看你的新料理！</div>`;
+  $('#dishStamp').textContent=has?(D.imgKind==='ai'?'AI 生成示意圖':'料理設計示意圖'):'還沒做料理';
+  $('#pinBar').style.display=has?'':'none';$('#cmpNote').style.display=has?'':'none';$('#againBtn').style.display=has&&D.imgKind==='ai'?'':'none';
+  $('#cA').textContent=D.keep;$('#cB').textContent=D.bring;drawPins($('#pinLayer'),has);
+  $('#cookBtn').textContent=has?'✨ 依新的描述再做一次':'✨ 做出我的料理';
+  $('#genNote').innerHTML=aiKey()?'按下按鈕後，AI 會依照你的設計，畫出<b>一道完整料理的成品圖</b>。':'這台裝置還沒設定 AI 金鑰，會用 A、B 的插圖組成<b>料理設計示意圖</b>。（老師可在市集入口的「老師看這裡」設定）'}
+function showWarn(t){const w=$('#aiWarn');w.innerHTML=t;w.classList.add('on')}
+async function cook(newSeed){$('#aiWarn').classList.remove('on');
+  const all=[D.aName,D.bName,D.keep,D.bring,D.replaceWhat,D.extra].join(' ');
+  if(BAD.test(all)){showWarn('🙅 描述裡有不適合放進料理的字詞，請改成食物的樣子再試一次。');return}
+  if(!aiKey()){await makeSketch();return}
+  if(newSeed||!D.seed)D.seed=Math.floor(Math.random()*1e6);
+  const url=`https://gen.pollinations.ai/image/${encodeURIComponent(buildPrompt())}?model=zimage&width=768&height=768&seed=${D.seed}&key=${encodeURIComponent(aiKey())}`;
+  const ld=$('#aiLoading');ld.classList.add('on');$('#cookBtn').disabled=true;$('#againBtn').disabled=true;
+  const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),75000);
+  try{const r=await fetch(url,{signal:ctl.signal});
+    if(!r.ok){throw new Error(r.status===401||r.status===403?'金鑰無效或已過期，請老師檢查金鑰。':r.status===402?'這把金鑰的額度用完了，請老師更換金鑰。':r.status===429?'太多人同時在做料理了，等 10 秒再按一次。':'AI 廚房暫時忙碌（'+r.status+'）。')}
+    const blob=await r.blob();const src=URL.createObjectURL(blob);const im=await loadImg(src);
+    const c=document.createElement('canvas');c.width=c.height=640;c.getContext('2d').drawImage(im,0,0,640,640);URL.revokeObjectURL(src);
+    D.img=c.toDataURL('image/jpeg',.85);D.imgKind='ai';D.pins={};saveD();renderCook();toast('料理出爐囉！在圖上標出 A 和 B 的特色 📍')}
+  catch(e){showWarn(`😵 ${e.name==='AbortError'?'等太久了，AI 廚房可能太忙。':esc(e.message||'連不上 AI 生圖服務（可能是網路擋住）。')} <button class="pill" style="margin-left:6px" onclick="makeSketch()">🎨 先用插圖組成設計示意圖</button>`)}
+  finally{clearTimeout(t);ld.classList.remove('on');$('#cookBtn').disabled=false;$('#againBtn').disabled=false}}
+$('#cookBtn').onclick=()=>cook(false);$('#againBtn').onclick=()=>cook(true);
+
+/* fallback: compose A + B illustrations into a design sketch */
+async function makeSketch(){const c=document.createElement('canvas');c.width=c.height=640;const ctx=c.getContext('2d');
+  try{await document.fonts.load('900 30px "Noto Sans TC"')}catch(e){}
+  ctx.fillStyle='#FFF7E8';ctx.fillRect(0,0,640,640);
+  const circ=async(name,cx,cy,r,col)=>{ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fillStyle='#fff';ctx.fill();ctx.clip();
+    const src=dishImg(name);if(src){try{const im=await loadImg(src);ctx.drawImage(im,cx-r*1.15,cy-r*1.15,r*2.3,r*2.3)}catch(e){}}else{ctx.fillStyle=col;ctx.globalAlpha=.15;ctx.fillRect(cx-r,cy-r,2*r,2*r);ctx.globalAlpha=1;ctx.fillStyle='#4A3426';ctx.font=FONT(900,Math.round(r/3));ctx.textAlign='center';ctx.fillText('🍽️',cx,cy-r*.15);ctx.font=FONT(900,Math.round(r/4.2));ctx.fillText(name,cx,cy+r*.35)}
+    ctx.restore();ctx.lineWidth=8;ctx.strokeStyle=col;ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.stroke()};
+  await circ(D.aName,260,290,210,'#E85D4A');await circ(D.bName,470,470,140,'#2BA59B');
+  ctx.fillStyle='#F2B33D';ctx.strokeStyle='#4A3426';ctx.lineWidth=5;ctx.beginPath();ctx.arc(420,345,34,0,7);ctx.fill();ctx.stroke();ctx.fillStyle='#4A3426';ctx.font=FONT(900,48);ctx.textAlign='center';ctx.fillText('＋',420,362);
+  const pill=(t,x,y,col)=>{ctx.font=FONT(900,24);let tt=t;while(ctx.measureText(tt).width>560&&tt.length>4)tt=tt.slice(0,-2);const w=ctx.measureText(tt).width+36;ctx.fillStyle=col;rr(ctx,x,y,w,44,22);ctx.fill();ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(tt,x+18,y+31)};
+  
+  D.img=c.toDataURL('image/jpeg',.88);D.imgKind='sketch';D.pins={a:{x:40,y:36},b:{x:73,y:66}};saveD();renderCook();toast('料理設計示意圖完成！點圖可以調整標籤位置')}
+
+/* ================= S3 menu / customer / poster ================= */
+function renderMenu(){const has=!!D.img;$('#menuDish').innerHTML=has?`<img src="${D.img}" alt="新料理">`:`<div class="emptyDish">還沒有成品圖<br><a href="#s2" onclick="setTimeout(()=>kGo(3))">到創意廚房做一道</a></div>`;
+  $('#menuStamp').textContent=has?(D.imgKind==='ai'?'AI 生成示意圖':'料理設計示意圖'):'';drawPins($('#menuPins'),has)}
+$('#mName').value=D.mName;$('#mIntro').value=D.mIntro;
+$('#mName').oninput=e=>{D.mName=e.target.value;saveD()};$('#mIntro').oninput=e=>{D.mIntro=e.target.value;saveD()};
+const STARTERS=['這是＿＿。','我把＿＿和＿＿結合在一起，','吃起來＿＿，','喜歡＿＿的你，要不要來一口？'];
+const TEXTURES=['酥脆','軟Q','酸辣','香甜','滑溜','爽脆','濃郁','清爽','鹹香','熱呼呼'];
+$('#starterChips').innerHTML='<span style="font-size:15px;align-self:center">句型：</span>'+STARTERS.map(s=>`<button class="chip">${s}</button>`).join('');
+$('#textureChips').innerHTML='<span style="font-size:15px;align-self:center">口感：</span>'+TEXTURES.map(s=>`<button class="chip">${s}</button>`).join('');
+$$('#starterChips .chip,#textureChips .chip').forEach(c=>c.onclick=()=>insertAtCursor($('#mIntro'),c.textContent));
+function insertAtCursor(ta,t){const s=ta.selectionStart??ta.value.length,e=ta.selectionEnd??ta.value.length;ta.value=ta.value.slice(0,s)+t+ta.value.slice(e);ta.focus();ta.selectionStart=ta.selectionEnd=s+t.length;ta.dispatchEvent(new Event('input'))}
+
+let stickerMode='a';
+function setSticker(m){stickerMode=m;$('#stA').classList.toggle('on',m==='a');$('#stB').classList.toggle('on',m==='b')}
+function openCustomer(){if(!D.img){toast('先到創意廚房做出成品圖喔！');return}if(!D.mName.trim()||!D.mIntro.trim()){toast('先寫好料理名稱和介紹詞，再請顧客來看！');return}
+  $('#custName').textContent=D.mName;$('#custIntro').textContent=D.mIntro;
+  const box=$('#custImg');box.innerHTML=`<img src="${D.img}" alt=""><div class="pinLayer" id="custPins" style="pointer-events:none"></div>`;box.dataset.r='';$('#revealBtn').textContent='🔍 揭曉設計師的標示';
+  box.onclick=e=>{const r=box.getBoundingClientRect();const s=document.createElement('div');s.className='sticker '+stickerMode;s.textContent=stickerMode==='a'?'A？':'B？';s.style.left=((e.clientX-r.left)/r.width*100)+'%';s.style.top=((e.clientY-r.top)/r.height*100)+'%';box.appendChild(s)};
+  $('#custOv').classList.add('on')}
+function clearStickers(){$$('#custImg .sticker').forEach(s=>s.remove())}
+function revealDesign(){const box=$('#custImg'),on=box.dataset.r!=='1';box.dataset.r=on?'1':'';drawPins($('#custPins'),on);$('#revealBtn').textContent=on?'🙈 收起標示':'🔍 揭曉設計師的標示';
+  if(on&&!D.pins.a&&!D.pins.b)toast(`設計師說：保留${D.aName}的「${D.keep}」，加入${D.bName}的「${D.bring}」`)}
+
+const PSTYLE=[{bg:'#FFF1D6',main:'#E85D4A',acc:'#F2B33D',ink:'#4A3426'},{bg:'#E3F5F1',main:'#2BA59B',acc:'#F48FB1',ink:'#2E3A3A'},{bg:'#EAF0FB',main:'#3D6FB6',acc:'#F2B33D',ink:'#25324A'},{bg:'#FCE8F0',main:'#D9577F',acc:'#6BAF4F',ink:'#4A2636'}];
+let pStyle=LS.get('pStyle',0);
+$('#styleDots').innerHTML=PSTYLE.map((s,i)=>`<button style="background:${s.main}" data-i="${i}"></button>`).join('');
+$$('#styleDots button').forEach(b=>b.onclick=()=>{pStyle=+b.dataset.i;LS.set('pStyle',pStyle);drawPoster()});
+$('#chef').value=LS.get('chef','');$('#slogan').value=D.slogan||'';
+$('#chef').oninput=e=>{LS.set('chef',e.target.value);drawPoster()};$('#slogan').oninput=e=>{D.slogan=e.target.value;saveD();drawPoster()};
+function openPoster(){if(!D.img){toast('先到創意廚房做出成品圖喔！');return}if(!D.mName.trim()){toast('先替料理取個名字吧！');return}
+  $('#posterOv').classList.add('on');$('#posterImg').style.display='none';$('#posterCanvas').style.display='block';drawPoster()}
+function wrapText(ctx,text,x,y,maxW,lh,maxLines){let line='',lines=[];for(const ch of [...text]){if(ch==='\n'){lines.push(line);line='';continue}const t=line+ch;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=ch}else line=t}if(line)lines.push(line);
+  if(lines.length>maxLines){lines=lines.slice(0,maxLines);lines[maxLines-1]=lines[maxLines-1].slice(0,-1)+'…'}lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh))}
+let pBusy=0;
+async function drawPoster(){const my=++pBusy,cv=$('#posterCanvas'),ctx=cv.getContext('2d'),S=PSTYLE[pStyle],W=1080,H=1440;
+  $$('#styleDots button').forEach((b,i)=>b.classList.toggle('on',i===pStyle));
+  try{await document.fonts.load('900 60px "Noto Sans TC"');await document.fonts.load('500 30px "Noto Sans TC"')}catch(e){}
+  let img=null;try{img=await loadImg(D.img)}catch(e){}if(my!==pBusy)return;
+  ctx.fillStyle=S.bg;ctx.fillRect(0,0,W,H);ctx.fillStyle=S.acc;ctx.globalAlpha=.25;for(let y=0;y<H;y+=44)for(let x=(y/44%2)*22;x<W;x+=44){ctx.beginPath();ctx.arc(x,y,4,0,7);ctx.fill()}ctx.globalAlpha=1;
+  for(let i=0;i<12;i++){ctx.fillStyle=i%2?'#fff':S.main;ctx.fillRect(i*90,0,90,70);ctx.beginPath();ctx.arc(i*90+45,70,45,0,Math.PI);ctx.fill()}
+  ctx.strokeStyle=S.ink;ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(0,70);ctx.lineTo(W,70);ctx.stroke();
+  ctx.fillStyle=S.ink;rr(ctx,340,140,400,64,32);ctx.fill();ctx.fillStyle='#fff';ctx.font=FONT(900,34);ctx.textAlign='center';ctx.fillText('我們的創意料理',540,184);
+  ctx.fillStyle=S.ink;ctx.font=FONT(900,[...D.mName].length>8?76:96);ctx.fillText(D.mName,540,312);
+  if(D.slogan){ctx.fillStyle=S.main;ctx.font=FONT(900,40);ctx.fillText('「'+D.slogan+'」',540,375)}
+  const iy=400,is=540,ix=(W-is)/2;ctx.save();ctx.translate(540,iy+is/2);ctx.rotate(-.02);ctx.fillStyle='#fff';ctx.strokeStyle=S.ink;ctx.lineWidth=8;rr(ctx,-is/2-18,-is/2-18,is+36,is+36,36);ctx.fill();ctx.stroke();ctx.restore();
+  if(img){ctx.save();rr(ctx,ix,iy,is,is,26);ctx.clip();ctx.drawImage(img,ix,iy,is,is);ctx.restore()}
+  ['a','b'].forEach(k=>{const p=D.pins[k];if(!p)return;const px=ix+p.x/100*is,py=iy+p.y/100*is,col=k==='a'?'#E85D4A':'#2BA59B';
+    ctx.fillStyle=col;ctx.strokeStyle='#fff';ctx.lineWidth=5;ctx.beginPath();ctx.arc(px,py,13,0,7);ctx.fill();ctx.stroke();
+    ctx.font=FONT(900,26);const t=`${k.toUpperCase()}｜${k==='a'?D.keep:D.bring}`,w=ctx.measureText(t).width+32;let lx=Math.min(Math.max(px-w/2,ix+6),ix+is-w-6);
+    ctx.fillStyle=col;rr(ctx,lx,py-64,w,44,22);ctx.fill();ctx.strokeStyle=S.ink;ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#fff';ctx.textAlign='left';ctx.fillText(t,lx+16,py-33)});
+  ctx.fillStyle=S.ink;rr(ctx,ix+12,iy+is-58,250,46,23);ctx.fill();ctx.fillStyle='#fff';ctx.font=FONT(700,24);ctx.textAlign='left';ctx.fillText(D.imgKind==='ai'?'AI 生成示意圖':'料理設計示意圖',ix+30,iy+is-27);
+  const ry=iy+is+80;ctx.textAlign='center';ctx.font=FONT(900,32);
+  [[`A ${D.aName}｜保留 ${D.keep}`,'#E85D4A',ry],[`B ${D.bName}｜${D.how==='replace'?'取代'+(D.replaceWhat||''):'加入'} ${D.bring}`,'#2BA59B',ry+60]].forEach(([t,c,y])=>{let tt=t;while(ctx.measureText(tt).width>940&&tt.length>4)tt=tt.slice(0,-2);if(tt!==t)tt+='…';const w=ctx.measureText(tt).width+60;ctx.fillStyle=c;rr(ctx,540-w/2,y-38,w,54,27);ctx.fill();ctx.fillStyle='#fff';ctx.fillText(tt,540,y)});
+  const by=ry+100;ctx.fillStyle='#fff';ctx.strokeStyle=S.ink;ctx.lineWidth=5;rr(ctx,70,by,940,H-by-100,30);ctx.fill();ctx.stroke();
+  ctx.fillStyle=S.ink;ctx.font=FONT(500,34);ctx.textAlign='left';wrapText(ctx,D.mIntro||'',110,by+58,860,50,Math.max(1,Math.floor((H-by-130)/50)));
+  ctx.textAlign='center';ctx.font=FONT(700,28);ctx.fillStyle=S.ink;ctx.fillText(`主廚：${$('#chef').value||'＿＿＿'}　｜　家鄉文化市集・四上社會第四單元`,540,H-40)}
+function downloadPoster(){let d;try{d=$('#posterCanvas').toDataURL('image/png')}catch(e){toast('無法下載，請截圖保存');return}
+  const a=document.createElement('a');a.href=d;a.download=`創意料理海報_${D.mName||'作品'}.png`;document.body.appendChild(a);a.click();a.remove();
+  $('#posterImg').src=d;$('#posterImg').style.display='block';$('#posterCanvas').style.display='none';toast('海報已下載！iPad 也可以長按圖片儲存')}
+function savePosterToWall(){const c=document.createElement('canvas');c.width=540;c.height=720;c.getContext('2d').drawImage($('#posterCanvas'),0,0,540,720);
+  const wall=LS.get('wall',[]);wall.unshift({d:c.toDataURL('image/jpeg',.8),n:D.mName,t:Date.now()});
+  let w=wall.slice(0,20);while(w.length&&!LS.set('wall',w))w.pop();toast('已貼到海報牆 📌')}
+function renderWall(){const wall=LS.get('wall',[]);$('#wallEmpty').style.display=wall.length?'none':'';
+  $('#wall').innerHTML=wall.map((w,i)=>`<figure style="--rot:${(i%3-1)*1.4}deg" data-i="${i}"><img src="${w.d}" alt="${esc(w.n)}"><figcaption>${esc(w.n)}<span class="hint">${new Date(w.t).toLocaleDateString('zh-TW')}</span></figcaption></figure>`).join('');
+  $$('#wall figure').forEach(f=>f.onclick=()=>{const i=+f.dataset.i,w=LS.get('wall',[])[i];$('#wallBig').src=w.d;$('#wallOv').classList.add('on');
+    $('#wallDl').onclick=()=>{const a=document.createElement('a');a.href=w.d;a.download=`創意料理海報_${w.n}.jpg`;document.body.appendChild(a);a.click();a.remove()};
+    $('#wallDel').onclick=()=>{const arr=LS.get('wall',[]);arr.splice(i,1);LS.set('wall',arr);closeOv('wallOv');renderWall()}})}
+
+/* ================= S4 clothes ================= */
+const HOTS=[
+ {t:'衣襟',a:'「大襟」：衣襟從領口斜斜開到右邊腋下，用布扣扣起來。',b:'禮服也保留了斜開的大襟和布扣，一看就知道是藍衫。',v:'keep'},
+ {t:'顏色',a:'以藍色為主，樸素、耐髒、好搭配。',b:'還是藍色，但布料更有光澤。',v:'both'},
+ {t:'袖口',a:'袖口反摺，接上淺藍色的布邊。',b:'袖口一樣有淺藍色拼接布邊。',v:'keep'},
+ {t:'輪廓長度',a:'寬鬆好活動，衣長到膝蓋附近，搭配長褲，方便耕種與勞動。',b:'上衣合身，裙襬長到地上，適合婚禮等隆重場合。',v:'change'},
+ {t:'裝飾',a:'選耐洗、耐穿的布料，幾乎沒有花紋。',b:'加上花朵刺繡，讓重要的日子更漂亮。',v:'change'}];
+const HOTPOS={a:[[56,20],[50,48],[10,22],[50,74],[38,62]],b:[[56,15],[45,60],[86,10],[78,90],[66,74]]};
+const VERD={keep:'<span class="keep">✅ 保留下來</span>',change:'<span class="change">🔄 因穿著場合而改變</span>',both:'<span class="keep">✅ 保留藍色</span>　<span class="change">🔄 布料更有光澤</span>'};
+['a','b'].forEach(s=>{const box=$(s==='a'?'#mqA':'#mqB');HOTS.forEach((h,i)=>{const p=HOTPOS[s][i];const b=document.createElement('button');b.className='hs';b.textContent=i+1;b.dataset.i=i;b.style.left=p[0]+'%';b.style.top=p[1]+'%';b.onclick=()=>pickHot(i);box.appendChild(b)})});
+function pickHot(i){const h=HOTS[i];$$('.hs').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));
+  $('#hotInfo').innerHTML=`<div><b>傳統藍衫｜${h.t}</b><br>${h.a}</div><div><b>藍衫禮服｜${h.t}</b><br>${h.b}</div>`;$('#verdict').innerHTML=VERD[h.v]}
+const CCARDS=[
+ {n:'排灣族傳統服飾',img:'k_paiwan',when:'參加祭典時，族人會穿戴傳統服飾與配件。',mean:'色彩鮮豔、刺繡複雜。常出現百步蛇圖案——百步蛇是排灣族的守護神，只有頭目與貴族的服飾才可以使用。'},
+ {n:'客家藍衫',img:'k_trad',when:'早期是日常勞動時穿；現在每當重要節日慶典（例如六堆運動會）會換上藍衫。',mean:'早期客家人辛苦開墾，選擇耐洗、耐穿的布料，方便耕種與勞動。穿上藍衫是傳承與推廣客家文化。'},
+ {n:'越南「奧黛」',img:'k_aodai',when:'越南新住民在傳統春節等節日時，會穿著奧黛過年。',mean:'奧黛有許多顏色與樣式；因為越南氣候炎熱，使用輕薄透氣的布料製成。'},
+ {n:'伊斯蘭教婦女頭巾',img:'k_hijab',when:'在臺灣有許多信仰伊斯蘭教的新住民婦女，外出時會穿戴。',mean:'因信仰需要穿戴符合宗教規範的服飾：頭巾要覆蓋頭髮和肩頸。我們用尊重的態度欣賞。'}];
+$('#ccards').innerHTML=CCARDS.map(c=>`<div class="ccard"><div class="in"><div class="f"><img src="img/${c.img}.jpg" alt="${c.n}"><h4>${c.n}</h4><span class="hint">點我翻面</span></div><div class="bk"><h4>${c.n}</h4><b>👗 穿著場合</b>${c.when}<b>💡 文化意義</b>${c.mean}</div></div></div>`).join('');
+$$('.ccard').forEach(c=>c.onclick=()=>c.classList.toggle('flip'));
+
+/* ================= S5 ================= */
+let lStep=0;
+function lGo(n){lStep=n;$$('#lSteps button').forEach((b,i)=>b.classList.toggle('on',i===n));$('#l0').classList.toggle('on',n===0);$('#l1').classList.toggle('on',n===1)}
+$$('#lSteps button').forEach(b=>b.onclick=()=>lGo(+b.dataset.l));
+const LANGS=[
+ {n:'國語',t:'北投站到了，往新北投的旅客，請在本站換車。',say:'北投站到了，往新北投的旅客，請在本站換車。',lang:'zh-TW'},
+ {n:'閩南語',t:'（用閩南語廣播同一句話：北投站到了，往新北投的旅客請在這站換車。）',note:'請老師或會說閩南語的同學念念看！'},
+ {n:'客家語',t:'（用客家語廣播同一句話：北投站到了，往新北投的旅客請在這站換車。）',note:'請老師或會說客家語的同學念念看！'},
+ {n:'English',t:'Beitou Station. Passengers for Xinbeitou, please change trains here.',say:'Beitou Station. Passengers for Xinbeitou, please change trains here.',lang:'en-US'},
+ {n:'日語・韓語',t:'在日本、韓國旅客較多的熱門景點車站，還會增加日語和韓語廣播。（課本 p.64）'}];
+$('#langBtns').innerHTML=LANGS.map((l,i)=>`<button class="pill" data-i="${i}">🔈 ${l.n}</button>`).join('');
+$$('#langBtns button').forEach(b=>b.onclick=()=>{const l=LANGS[+b.dataset.i];$$('#langBtns button').forEach(x=>x.classList.toggle('hot',x===b));
+  $('#langBubble').innerHTML=`<b>${l.n}：</b>${esc(l.t)}${l.note?`<br><span class="hint">🗣️ ${l.note}</span>`:''}`;
+  if(l.say&&'speechSynthesis' in window){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(l.say);u.lang=l.lang;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}});
+function langAns(ok){const fb=$('#langFb');fb.classList.add('on');fb.innerHTML=ok?'✅ 對！不同語言說的都是「北投站」。多語廣播和站名讓使用不同語言的旅客，都能找到<b>同一個地方</b>。':'🤔 再聽聽看：每種語言都在說「北投站到了」喔！多語資訊是為了幫助不同的旅客找到同一個地方。'}
+const PEOPLE=[
+ {nm:'林晴安',img:'p_qingan',story:'「爸媽幫我取名叫<b>晴安</b>，希望我每天心情像晴天一樣，平平安安。」<br>👉 名字帶著<b>家人的期許或祝福</b>。'},
+ {nm:'伊婉‧瓦旦',img:'p_iwan',story:'「我的名字是<b>伊婉</b>，後面加上爸爸的名字<b>瓦旦</b>。」<br>👉 有些原住民族會在孩子名字後面<b>加上父親或母親的名字</b>。'},
+ {nm:'陳安琪',img:'p_anqi',story:'「我跟媽媽姓陳，弟弟跟爸爸姓。我們不同姓，但是是一家人！」<br>👉 小孩的<b>姓</b>可能跟著父親，也可能跟著母親。'}];
+$('#people').innerHTML=PEOPLE.map(p=>`<div class="pcard"><img class="face" src="img/${p.img}.jpg" alt=""><div class="nm">${p.nm}</div><span class="fic">虛構角色・點我聽名字的故事</span><div class="story">${p.story}</div></div>`).join('');
+$$('.pcard').forEach(c=>c.onclick=()=>c.classList.toggle('open'));
+const NAME_OPTS=[
+ {t:'「請問你的名字怎麼念？」',g:1,chat:[['me','請問你的名字怎麼念？'],['you','我叫伊婉‧瓦旦。'],['me','伊婉‧瓦旦，我這樣念對嗎？'],['you','對！謝謝你認真念我的名字 😊']]},
+ {t:'「可以再說一次嗎？我想把你的名字念對。」',g:1,chat:[['me','可以再說一次嗎？我想把你的名字念對。'],['you','當然可以，伊——婉。'],['me','伊婉，很高興認識你！'],['you','我也很高興認識你！']]},
+ {t:'「你的名字好奇怪喔！」',g:0,fb:'這句話可能讓對方難過。每個名字背後都有家人的心意，不熟悉不等於奇怪喔！'},
+ {t:'「太難念了，我直接幫你取個綽號。」',g:0,fb:'隨便幫同學取名字不夠尊重。試著請對方教你怎麼念，並正確念出來吧！'}];
+$('#nameOpts').innerHTML=NAME_OPTS.map((o,i)=>`<button class="opt" data-i="${i}">${o.t}</button>`).join('');
+$$('#nameOpts .opt').forEach(b=>b.onclick=()=>{const o=NAME_OPTS[+b.dataset.i];$$('#nameOpts .opt').forEach(x=>x.classList.remove('good','meh'));b.classList.add(o.g?'good':'meh');const fb=$('#nameFb');fb.classList.add('on');
+  fb.innerHTML=o.g?`<b>✅ 很尊重的問法！看看角色示範怎麼確認發音：</b><div class="chat" style="margin-top:8px">${o.chat.map(([w,t])=>`<div class="${w}">${t}</div>`).join('')}</div>`:`<b>🤔 換個說法試試看</b><br>${o.fb}`});
+
+/* =========================================================
+   QUIZ
+   ========================================================= */
+$$('#qtabs button').forEach(b=>b.onclick=()=>{$$('#qtabs button').forEach(x=>x.classList.toggle('on',x===b));$$('.qpane').forEach((p,i)=>p.classList.toggle('on',i===+b.dataset.q));if(b.dataset.q==='0')drawLines()});
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+/* match */
+const MATCH=[['碗粿','閩南族群'],['炒粄條','客家族群'],['竹筒飯','原住民族'],['越南河粉','越南新住民']];
+let mL=[],mR=[],mPairs={},mSel=null,mChecked=false;
+function initMatch(){mL=shuffle(MATCH.map(m=>m[0]));mR=shuffle(MATCH.map(m=>m[1]));mPairs={};mSel=null;mChecked=false;$('#matchScore').innerHTML='';
+  $('#matchBox').innerHTML=`<svg class="lines"></svg>`+mL.map((l,i)=>`<button class="mi" data-s="l" data-v="${l}" style="grid-column:1;grid-row:${i+1}">🍚 ${l}</button>`).join('')+mR.map((r,i)=>`<button class="mi" data-s="r" data-v="${r}" style="grid-column:2;grid-row:${i+1}">${r}</button>`).join('');
+  $$('#matchBox .mi').forEach(b=>b.onclick=()=>{if(mChecked){mChecked=false;$$('#matchBox .mi').forEach(x=>x.classList.remove('ok','bad'));$('#matchScore').innerHTML=''}
+    if(b.dataset.s==='l'){mSel=b.dataset.v;$$('#matchBox .mi[data-s=l]').forEach(x=>x.classList.toggle('sel',x===b))}
+    else if(mSel){for(const k in mPairs)if(mPairs[k]===b.dataset.v)delete mPairs[k];mPairs[mSel]=b.dataset.v;mSel=null;$$('#matchBox .mi').forEach(x=>x.classList.remove('sel'));drawLines()}
+    else toast('先點左邊的米食喔！')});drawLines();}
+function drawLines(){const box=$('#matchBox'),svg=box.querySelector('svg');if(!svg)return;const R=box.getBoundingClientRect();let s='';
+  for(const l in mPairs){const a=box.querySelector(`.mi[data-s=l][data-v="${l}"]`).getBoundingClientRect(),b=box.querySelector(`.mi[data-s=r][data-v="${mPairs[l]}"]`).getBoundingClientRect();
+    const ok=MATCH.find(m=>m[0]===l)[1]===mPairs[l];const col=mChecked?(ok?'#6BAF4F':'#E85D4A'):'#4A3426';
+    s+=`<line x1="${a.right-R.left}" y1="${a.top+a.height/2-R.top}" x2="${b.left-R.left}" y2="${b.top+b.height/2-R.top}" stroke="${col}" stroke-width="5" stroke-linecap="round"/><circle cx="${a.right-R.left}" cy="${a.top+a.height/2-R.top}" r="7" fill="${col}"/><circle cx="${b.left-R.left}" cy="${b.top+b.height/2-R.top}" r="7" fill="${col}"/>`}
+  svg.innerHTML=s}
+window.addEventListener('resize',drawLines);
+function checkMatch(){if(Object.keys(mPairs).length<4){toast('四條線都連好再對答案喔！');return}mChecked=true;let n=0;
+  $$('#matchBox .mi[data-s=l]').forEach(b=>{const ok=MATCH.find(m=>m[0]===b.dataset.v)[1]===mPairs[b.dataset.v];b.classList.add(ok?'ok':'bad');n+=ok});drawLines();
+  $('#matchScore').innerHTML=n===4?'<span class="done-stamp">全部連對！</span> 同樣是米，不同族群有不同的料理方式 🍚':`連對 ${n} 條。紅色的線再想想看，點一下就能重新連！`}
+initMatch();
+/* memory */
+const MEM=[['百步蛇圖案','排灣族'],['藍衫','客家族群'],['奧黛','越南'],['頭巾','伊斯蘭教信仰']];
+let memCards=[],memUp=[],memDone=0,memLock=false;
+function initMem(){memCards=shuffle(MEM.flatMap((p,i)=>[{t:p[0],p:i},{t:p[1],p:i}]));memUp=[];memDone=0;memLock=false;$('#memScore').innerHTML='';
+  $('#memBox').innerHTML=memCards.map((c,i)=>`<button class="mc" data-i="${i}">${c.t}</button>`).join('');
+  $$('#memBox .mc').forEach(b=>b.onclick=()=>{if(memLock||b.classList.contains('up')||b.classList.contains('done'))return;b.classList.add('up');memUp.push(b);
+    if(memUp.length===2){const [x,y]=memUp;if(memCards[x.dataset.i].p===memCards[y.dataset.i].p){x.classList.add('done');y.classList.add('done');memUp=[];memDone++;
+        const exp={0:'百步蛇是排灣族的守護神。',1:'客家藍衫耐洗耐穿、方便勞動。',2:'奧黛用輕薄透氣的布料。',3:'頭巾是符合宗教規範的服飾。'}[memCards[x.dataset.i].p];
+        $('#memScore').innerHTML=memDone===4?'<span class="done-stamp">全部配對成功！</span> 不同族群的服飾，各有特色與意義 👏':'✨ 配對成功！'+exp}
+      else{memLock=true;setTimeout(()=>{x.classList.remove('up');y.classList.remove('up');memUp=[];memLock=false},900)}}})}
+initMem();
+/* sort */
+const SORT=[['泰國的打拋豬肉','orig'],['韓國的泡菜','orig'],['原住民族的竹筒飯','orig'],['客家族群的桔醬','orig'],['米漢堡','fuse'],['臭豆腐披薩','fuse'],['包紅豆芋頭的娘惹糕','fuse'],['改用九層塔的泰式料理','fuse']];
+let sortSel=null,sortPlace={};
+function initSort(){sortSel=null;sortPlace={};$('#sortScore').innerHTML='';renderSort(shuffle(SORT.map(s=>s[0])))}
+let sortOrder=[];
+function renderSort(order){if(order)sortOrder=order;
+  $('#sortPool').innerHTML=sortOrder.filter(t=>!sortPlace[t]).map(t=>`<button class="sortItem ${sortSel===t?'sel':''}">${t}</button>`).join('')||'<span class="hint">全部放好了！按「對答案」看看。</span>';
+  ['orig','fuse'].forEach(k=>{$(`.basket[data-b=${k}] .items`).innerHTML=sortOrder.filter(t=>sortPlace[t]===k).map(t=>`<button class="sortItem">${t}</button>`).join('')});
+  $$('#sortPool .sortItem').forEach(b=>b.onclick=e=>{e.stopPropagation();sortSel=b.textContent;renderSort()});
+  $$('.basket .sortItem').forEach(b=>b.onclick=e=>{e.stopPropagation();delete sortPlace[b.textContent];sortSel=b.textContent;$('#sortScore').innerHTML='';renderSort()});}
+function dropSort(k){if(!sortSel){toast('先點一個料理喔！');return}sortPlace[sortSel]=k;sortSel=null;renderSort()}
+function checkSort(){if(Object.keys(sortPlace).length<SORT.length){toast('把每一道料理都放進籃子再對答案！');return}let n=0;
+  $$('.basket .sortItem').forEach(b=>{const ok=SORT.find(s=>s[0]===b.textContent)[1]===b.closest('.basket').dataset.b;b.classList.add(ok?'ok':'bad');n+=ok});
+  $('#sortScore').innerHTML=n===SORT.length?'<span class="done-stamp">全部分對！</span> 文化交流後，可能產生融合與創新 ✨':`放對 ${n} 個。紅色的點一下可以拿回來重放。提示：有沒有「加入另一個地方的東西」？`}
+initSort();
+/* situations */
+const SIT=[
+ {q:'同學帶來媽媽家鄉的點心，味道你從來沒吃過，你可以怎麼做？',o:['說「好奇怪的味道，好噁心！」','說聲謝謝，可以試一小口，或禮貌地說「我先欣賞就好」','叫他以後不要帶來學校'],a:1,e:'無論喜歡或不喜歡，我們都應該學習尊重不同地區的飲食文化。'},
+ {q:'捷運站用國語、閩南語、客家語、英語等多種語言廣播，主要的好處是什麼？',o:['讓廣播時間變長','讓使用不同語言的旅客都更容易理解','只是為了好聽'],a:1,e:'多語廣播讓使用不同語言的旅客都能聽懂，找到要去的地方。'},
+ {q:'為什麼現在的客家族群，會在重要節日慶典換上藍衫？',o:['因為藍衫最便宜','為了傳承與推廣客家文化','因為規定每天都要穿'],a:1,e:'在適當場合穿著傳統服飾，可以傳承與展現族群文化。'},
+ {q:'看到新住民阿姨外出時戴著覆蓋頭髮和肩頸的頭巾，你會怎麼想？',o:['她一定很怕冷','這可能是她的信仰對服飾的規範，我應該尊重','叫她拿下來比較涼快'],a:1,e:'有些人因信仰需穿戴符合宗教規範的服飾，我們用尊重的態度欣賞。'},
+ {q:'「娃郁‧瓦歷斯」這個名字，是怎麼取的？',o:['名字娃郁，加上爸爸的名字瓦歷斯','隨便選的兩個字','跟著最喜歡的明星取的'],a:0,e:'有些原住民族會在孩子的名字後面，加上父親或母親的名字。（課本 p.66）'},
+];
+let sitI=0,sitOk=0,sitAns=false;
+function renderSit(){if(sitI>=SIT.length){$('#sitBox').innerHTML=`<div style="text-align:center;padding:20px"><div style="font-size:64px">🎉</div><h3 style="font-size:26px">情境題完成！</h3><p style="font-size:19px">第一次就選到尊重做法的有 ${sitOk} / ${SIT.length} 題。</p><p style="font-size:19px">尊重、欣賞不同文化，是逛家鄉文化市集最重要的禮物 💗</p><button class="pill hot" onclick="sitI=0;sitOk=0;renderSit()">🔄 再玩一次</button></div>`;return}
+  const s=SIT[sitI];sitAns=false;$('#sitBox').innerHTML=`<p class="hint">第 ${sitI+1} / ${SIT.length} 題</p><h3 style="font-size:23px;margin:4px 0 6px">${s.q}</h3><div class="opts">${s.o.map((o,i)=>`<button class="opt" data-i="${i}">${'ABC'[i]}. ${o}</button>`).join('')}</div><div class="fb" id="sitFb"></div><div class="nav"><span></span><button class="pill hot" id="sitNext" style="display:none">下一題 ➜</button></div>`;
+  let first=true;$$('#sitBox .opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=i===s.a;b.classList.add(ok?'good':'meh');const fb=$('#sitFb');fb.classList.add('on');
+    fb.innerHTML=ok?`✅ 答對了！${s.e}`:'🤔 再想一想，換一個選項試試看！';if(ok){if(first)sitOk++;$('#sitNext').style.display=''}first=false;});
+  $('#sitNext').onclick=()=>{sitI++;renderSit()};}
+renderSit();
+
+
+/* boot */
+show(location.hash.slice(1)||"home");
+</script>
+</body>
+</html>
