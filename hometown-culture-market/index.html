@@ -355,6 +355,16 @@ main{max-width:1180px;margin:0 auto;padding:18px 18px 80px}
 .pcard img.face{width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid var(--ink);display:block;margin:0 auto}
 .keybox{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
 .keybox input{flex:1;min-width:240px;border:3px solid var(--ink);border-radius:12px;padding:8px 10px;font-size:16px}
+
+.padletCard{margin-top:14px;background:#F7F0FF;border-color:#7C5CC4}
+.padletCard h3{margin:0 0 6px;font-size:20px}
+.pSteps{margin:6px 0 10px;padding-left:22px;line-height:1.7;font-size:16.5px}
+.pSteps b{color:#5B3FA8}
+.promptBox{background:#fff;border:2px dashed #7C5CC4;border-radius:12px;padding:8px 10px;font-size:16px;line-height:1.5;margin-bottom:10px}
+.pill.purple{background:#7C5CC4;color:#fff}
+.cropWrap{position:relative;width:min(80vw,460px);aspect-ratio:1/1;margin:0 auto;overflow:hidden;border:4px solid var(--ink);border-radius:18px;background:#222;touch-action:none;cursor:grab}
+.cropWrap img{position:absolute;left:0;top:0;transform-origin:0 0;user-select:none;-webkit-user-drag:none;pointer-events:none;max-width:none}
+.cropWrap:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.7);pointer-events:none}
 </style>
 </head>
 <body>
@@ -486,6 +496,23 @@ main{max-width:1180px;margin:0 auto;padding:18px 18px 80px}
             <button class="pill" id="againBtn" style="display:none">🔄 換一張</button>
           </div>
           <div class="genNote" id="genNote">按下按鈕後，AI 會依照你的設計，畫出<b>一道完整料理的成品圖</b>。</div>
+        </div>
+        <div class="card padletCard">
+          <h3>🅿️ 也可以到班級 Padlet 用 AI 做圖</h3>
+          <ol class="pSteps">
+            <li>按 <b>📋 複製我的料理描述</b>，再按 <b>打開 Padlet</b>。</li>
+            <li>在 Padlet 按 <b>＋</b> 新增貼文 → 點最右邊的 <b>「⋯／所有工具」</b> → 選 <b>「AI 圖像（I can't draw）」</b>。</li>
+            <li>在描述框<b>長按 → 貼上</b>，按 Enter，等一下會出現幾張圖，<b>選一張最像你設計的</b>，再發佈貼文。</li>
+            <li>把那張圖放大，<b>同時按「電源鍵＋音量上鍵」截圖</b>。</li>
+            <li>回到這裡按 <b>📷 上傳截圖</b>，選剛剛的截圖，移動、縮放只留下料理。</li>
+          </ol>
+          <div class="promptBox" id="padletPrompt"></div>
+          <div class="row">
+            <button class="pill" id="copyPrompt">📋 複製我的料理描述</button>
+            <a class="pill purple" href="https://padlet.com/minekiki20021/padlet-s025k64uodv7zududxdl" target="_blank" rel="noopener" style="text-decoration:none">🅿️ 打開 Padlet</a>
+            <button class="pill teal" onclick="$('#shotFile').click()">📷 上傳截圖</button>
+            <input type="file" id="shotFile" accept="image/*" style="display:none">
+          </div>
         </div>
         <div class="compareNote" id="cmpNote" style="display:none">🔍 <b>比一比：</b>圖上看得到 A 的「<span id="cA"></span>」和 B 的「<span id="cB"></span>」嗎？<br>點上面的按鈕，在圖上各貼一個標籤。不像你想的？回到「② 決定怎麼融合」改寫，再做一次！</div>
       </div>
@@ -632,6 +659,13 @@ main{max-width:1180px;margin:0 auto;padding:18px 18px 80px}
 </div></div>
 
 <div class="overlay" id="wallOv"><div class="sheet" style="max-width:640px;text-align:center"><button class="pill close" onclick="closeOv('wallOv')">✖</button><img id="wallBig" style="width:100%;border-radius:14px;margin-top:40px" alt=""><p class="hint">長按圖片可以儲存到相簿</p><div class="row" style="justify-content:center"><button class="pill red" id="wallDl">⬇️ 下載</button><button class="pill" id="wallDel">🗑️ 從海報牆移除</button></div></div></div>
+<div class="overlay" id="cropOv"><div class="sheet" style="max-width:620px;text-align:center">
+  <h2 style="margin:4px 0 6px">✂️ 只留下你的料理</h2>
+  <p class="hint" style="margin:0 0 10px">用手指拖曳移動圖片，用下面的滑桿放大縮小，讓料理填滿方框。</p>
+  <div class="cropWrap" id="cropWrap"><img id="cropImg" alt=""></div>
+  <input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" style="width:min(80vw,460px);margin:14px 0">
+  <div class="row" style="justify-content:center"><button class="pill" onclick="closeOv('cropOv')">取消</button><button class="pill red" id="cropOk">✅ 使用這張圖</button></div>
+</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -783,7 +817,7 @@ function renderBuilder(){
   if(k==='keep')$$('#keepChips .chip').forEach(c=>c.classList.toggle('on',c.textContent===D.keep));if(k==='bring')$$('#bringChips .chip').forEach(c=>c.classList.toggle('on',c.textContent===D.bring))}));
 function sentenceHTML(){const h=HOW[D.how];
   return `保留 <b class="a">${esc(D.aName||'A')}</b> 的「<b class="a">${esc(D.keep||'＿＿＿')}</b>」，<br>${h?esc(h.s(D.bring||'＿＿＿',D.replaceWhat)).replace('B 的',`<b class="b">${esc(D.bName)}</b> 的`).replace(/「(.*?)」/,'「<b class="b">$1</b>」'):`加入 <b class="b">${esc(D.bName||'B')}</b> 的「<b class="b">${esc(D.bring||'＿＿＿')}</b>」，放在 <span class="q">？</span>`}。`}
-function renderSketch(){$('#sketch').innerHTML=sentenceHTML();$('#sketch3').innerHTML=sentenceHTML()}
+function renderSketch(){$('#sketch').innerHTML=sentenceHTML();$('#sketch3').innerHTML=sentenceHTML();const p=$('#padletPrompt');if(p)p.textContent=padletPrompt()}
 
 /* ---- step 3: cook ---- */
 const BAD=/血腥|殺|死|槍|刀|炸彈|毒|屎|尿|便便|大便|屁|裸|色情|性感|酒|菸|香菸|毒品|笨蛋|白痴|垃圾|蟑螂|老鼠|蟲|人肉|ass|sex|kill|blood|gun|nude|poop/i;
@@ -818,6 +852,23 @@ async function cook(newSeed){$('#aiWarn').classList.remove('on');
   catch(e){showWarn(`😵 ${e.name==='AbortError'?'等太久了，AI 廚房可能太忙。':esc(e.message||'連不上 AI 生圖服務（可能是網路擋住）。')} <button class="pill" style="margin-left:6px" onclick="makeSketch()">🎨 先用插圖組成設計示意圖</button>`)}
   finally{clearTimeout(t);ld.classList.remove('on');$('#cookBtn').disabled=false;$('#againBtn').disabled=false}}
 $('#cookBtn').onclick=()=>cook(false);$('#againBtn').onclick=()=>cook(true);
+
+/* ---- Padlet route ---- */
+function padletPrompt(){const h=HOW[D.how];if(!h||!D.aName||!D.bName)return '（先完成「② 決定怎麼融合」，這裡就會出現你的料理描述）';
+  return `一道創意料理：保留${D.aName}的${D.keep}，${h.p(D.bName,D.bring,D.replaceWhat).replace('，料理切開一半，清楚看得到內餡的切面','，切開看得到內餡')}。${D.extra?D.extra+'。':''}只有一道料理放在盤子上，可愛的繪本插畫風，沒有文字。`}
+$('#copyPrompt').onclick=async()=>{const t=padletPrompt();try{await navigator.clipboard.writeText(t);toast('已複製！到 Padlet 長按 → 貼上')}catch(e){const r=document.createRange();r.selectNodeContents($('#padletPrompt'));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);toast('請長按反白的文字 → 拷貝')}};
+let crop={s:1,x:0,y:0,base:1};
+$('#shotFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const url=URL.createObjectURL(f);
+  const im=$('#cropImg');im.onload=()=>{const W=$('#cropWrap').clientWidth;crop.base=W/Math.min(im.naturalWidth,im.naturalHeight);crop.s=1;$('#cropZoom').value=1;
+    crop.x=(W-im.naturalWidth*crop.base)/2;crop.y=(W-im.naturalHeight*crop.base)/2;applyCrop()};im.src=url;$('#cropOv').classList.add('on')};
+function clampCrop(){const im=$('#cropImg'),W=$('#cropWrap').clientWidth,k=crop.base*crop.s,w=im.naturalWidth*k,h=im.naturalHeight*k;crop.x=Math.min(0,Math.max(W-w,crop.x));crop.y=Math.min(0,Math.max(W-h,crop.y))}
+function applyCrop(){clampCrop();const k=crop.base*crop.s;$('#cropImg').style.transform=`translate(${crop.x}px,${crop.y}px) scale(${k})`}
+$('#cropZoom').oninput=e=>{const W=$('#cropWrap').clientWidth,old=crop.s,n=+e.target.value,c=W/2;crop.x=c-(c-crop.x)*n/old;crop.y=c-(c-crop.y)*n/old;crop.s=n;applyCrop()};
+(()=>{const w=$('#cropWrap');let drag=null;w.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,ox:crop.x,oy:crop.y};w.setPointerCapture(e.pointerId)});
+  w.addEventListener('pointermove',e=>{if(!drag)return;crop.x=drag.ox+e.clientX-drag.x;crop.y=drag.oy+e.clientY-drag.y;applyCrop()});
+  w.addEventListener('pointerup',()=>drag=null);w.addEventListener('pointercancel',()=>drag=null)})();
+$('#cropOk').onclick=()=>{const im=$('#cropImg'),W=$('#cropWrap').clientWidth,k=crop.base*crop.s,c=document.createElement('canvas');c.width=c.height=640;
+  c.getContext('2d').drawImage(im,-crop.x/k,-crop.y/k,W/k,W/k,0,0,640,640);D.img=c.toDataURL('image/jpeg',.85);D.imgKind='ai';D.pins={};saveD();URL.revokeObjectURL(im.src);closeOv('cropOv');renderCook();toast('圖片放好了！在圖上標出 A 和 B 的特色 📍')};
 
 /* fallback: compose A + B illustrations into a design sketch */
 async function makeSketch(){const c=document.createElement('canvas');c.width=c.height=640;const ctx=c.getContext('2d');
