@@ -178,7 +178,8 @@ main{max-width:1180px;margin:0 auto;padding:18px 18px 80px}
 .menuBoard label{font-weight:900;font-size:19px;display:block;margin:6px 0}
 .menuBoard input,.menuBoard textarea{width:100%;border-radius:14px;border:3px solid #fff;padding:10px 12px;background:#FFFDF6}
 .menuBoard textarea{min-height:150px;line-height:1.6;resize:vertical}
-.menuBoard .chip{background:#FFFDF6}
+.menuBoard .chip,.menuBoard .pill{background:#FFFDF6;color:var(--ink)}
+.menuBoard .chips>span{color:#fff}
 .menuBoard small{color:#d9f0e3}
 .demo{display:none;background:#FFFDF6;color:var(--ink);border-radius:14px;padding:12px;margin-top:8px;line-height:1.6;font-size:17px}
 .demo.on{display:block}
@@ -893,7 +894,7 @@ const TEXTURES=['酥脆','軟Q','酸辣','香甜','滑溜','爽脆','濃郁','�
 $('#starterChips').innerHTML='<span style="font-size:15px;align-self:center">句型：</span>'+STARTERS.map(s=>`<button class="chip">${s}</button>`).join('');
 $('#textureChips').innerHTML='<span style="font-size:15px;align-self:center">口感：</span>'+TEXTURES.map(s=>`<button class="chip">${s}</button>`).join('');
 $$('#starterChips .chip,#textureChips .chip').forEach(c=>c.onclick=()=>insertAtCursor($('#mIntro'),c.textContent));
-function insertAtCursor(ta,t){const s=ta.selectionStart??ta.value.length,e=ta.selectionEnd??ta.value.length;ta.value=ta.value.slice(0,s)+t+ta.value.slice(e);ta.focus();ta.selectionStart=ta.selectionEnd=s+t.length;ta.dispatchEvent(new Event('input'))}
+function insertAtCursor(ta,t){const s=ta.selectionStart??ta.value.length,e=ta.selectionEnd??ta.value.length;ta.value=ta.value.slice(0,s)+t+ta.value.slice(e);ta.focus();const b=t.indexOf('＿＿');if(b>=0){ta.selectionStart=s+b;ta.selectionEnd=s+b+2}else{ta.selectionStart=ta.selectionEnd=s+t.length}ta.dispatchEvent(new Event('input'))}
 
 let stickerMode='a';
 function setSticker(m){stickerMode=m;$('#stA').classList.toggle('on',m==='a');$('#stB').classList.toggle('on',m==='b')}
